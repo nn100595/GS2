@@ -1,0 +1,2740 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Ms. Noémie’s Classroom - English 2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Nunito', 'sans-serif'] },
+                    colors: {
+                        cream: '#FFF7D6',
+                        strawberry: '#FFD6E0',
+                        lavender: '#E5D9F2',
+                        mint: '#D4F1E8',
+                        skyblue: '#D6ECFA',
+                        carrot: '#FF9E44',
+                        cocoa: '#5C3D2E'
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #FFF7D6;
+            background-image:
+                radial-gradient(#F3D58D 1.6px, transparent 1.6px),
+                radial-gradient(#FFD6E0 1.4px, #FFF7D6 1.4px);
+            background-size: 32px 32px;
+            background-position: 0 0, 16px 16px;
+            color: #5C3D2E;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .sticker-card {
+            background-color: #FFFDF7;
+            border: 3.5px solid #5C3D2E;
+            box-shadow: 0 5px 0 #5C3D2E;
+            border-radius: 1.75rem;
+        }
+        .stitch-box {
+            border: 2px dashed rgba(92, 61, 46, 0.3);
+            border-radius: 1.35rem;
+        }
+        .btn-bunny {
+            border: 3px solid #5C3D2E;
+            box-shadow: 0 4px 0 #5C3D2E;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+            user-select: none;
+        }
+        .btn-bunny:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 0 #5C3D2E;
+        }
+        .btn-bunny:active:not(:disabled) {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #5C3D2E;
+        }
+        .btn-bunny:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+        .fc-scene { perspective: 1100px; }
+        .fc-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-style: preserve-3d;
+        }
+        .fc-scene.flipped .fc-inner { transform: rotateY(180deg); }
+        .fc-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 1.75rem;
+        }
+        .fc-back { transform: rotateY(180deg); }
+        @keyframes pulseRec {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(232, 111, 138, 0.5); }
+            50% { transform: scale(1.06); box-shadow: 0 0 0 10px rgba(232, 111, 138, 0); }
+        }
+        .rec-pulse { animation: pulseRec 1s infinite ease-in-out; }
+    </style>
+</head>
+<body>
+
+    <!-- Toast Feedback -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Nickname & Avatar Edit Modal -->
+    <div id="nickname-modal" class="fixed inset-0 bg-[#5C3D2E]/45 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+        <div class="sticker-card max-w-sm w-full p-6 bg-[#FFFDF7]">
+            <h3 class="text-xl font-black mb-3 text-center">My Profile</h3>
+            <div id="modal-avatar-picker" class="grid grid-cols-4 gap-2 mb-3"></div>
+            <input id="modal-nickname-input" type="text" maxlength="18" placeholder="Nickname..." class="w-full bg-[#FFF7D6] border-3 border-[#5C3D2E] rounded-2xl px-4 py-2.5 font-black text-center text-lg outline-none mb-4">
+            <div class="flex gap-2 justify-center">
+                <button type="button" onclick="closeNicknameModal()" class="btn-bunny bg-white px-4 py-2 rounded-2xl font-black text-sm">Cancel</button>
+                <button type="button" onclick="saveEditedNickname()" class="btn-bunny bg-[#FFD6E0] px-5 py-2 rounded-2xl font-black text-sm">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 1. EXACT WEBSITE HEADER ==================== -->
+    <header class="bg-[#FFFDF7]/95 backdrop-blur-md border-b-4 border-[#5C3D2E] sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            <div onclick="goHome()" class="flex items-center gap-3 cursor-pointer">
+                <div id="header-bunny-left" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#FFD6E0] border-3 border-[#5C3D2E] p-1 shrink-0"></div>
+                <div>
+                    <h1 class="text-lg sm:text-2xl md:text-3xl font-black text-[#5C3D2E] leading-tight">Welcome to Ms. Noémie’s Classroom</h1>
+                    <p class="text-sm sm:text-base font-extrabold text-[#855E4B]">English 2</p>
+                </div>
+            </div>
+
+            <!-- Right Controls: UK Youth Voice Switcher & Student Profile -->
+            <div class="flex items-center gap-2 sm:gap-2.5">
+                <div class="bg-[#D6ECFA] border-2 border-[#5C3D2E] px-2.5 py-1.5 rounded-2xl text-xs font-black flex items-center gap-1.5">
+                    <span>🇬🇧</span>
+                    <button type="button" id="voice-role-btn" onclick="togglePreferredSpeaker()" class="underline decoration-2 cursor-pointer" title="Switch UK Girl / Boy Voice">
+                        UK Girl
+                    </button>
+                </div>
+
+                <div id="header-profile-bar" class="hidden items-center gap-2">
+                    <button type="button" onclick="openNicknameModal()" class="btn-bunny bg-[#E5D9F2] px-3 py-1.5 rounded-2xl font-black text-xs sm:text-sm flex items-center gap-1.5">
+                        <span id="hdr-bunny-mini" class="w-5 h-5 inline-block"></span>
+                        <span id="hdr-nickname">Student</span>
+                        <i class="fa-solid fa-pen text-[10px]"></i>
+                    </button>
+                    <div class="bg-[#FF9E44]/35 border-2 border-[#5C3D2E] px-2.5 py-1.5 rounded-2xl text-xs sm:text-sm font-black">
+                        ⭐ <span id="hdr-stars">0</span>
+                    </div>
+                    <div class="bg-[#FFD6E0] border-2 border-[#5C3D2E] px-2.5 py-1.5 rounded-2xl text-xs sm:text-sm font-black">
+                        🔥 <span id="hdr-streak">1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- UK Voice Status Banner (Only visible if en-GB voice is absent) -->
+    <div id="uk-voice-warning" class="hidden max-w-4xl mx-auto mt-3 px-4">
+        <div class="bg-[#FFD6E0] border-3 border-[#5C3D2E] rounded-2xl px-4 py-2 text-center font-black text-xs sm:text-sm">
+            ⚠️ British English (en-GB) voice not found on this browser. Please enable English (United Kingdom) in device voice settings.
+        </div>
+    </div>
+
+    <!-- ==================== 2. STUDENT NICKNAME GATE ==================== -->
+    <main class="max-w-7xl mx-auto px-4 py-6">
+        <section id="nickname-gate" class="max-w-md mx-auto my-6">
+            <div class="sticker-card p-6 sm:p-7 bg-[#FFFDF7] text-center">
+                <div class="stitch-box p-5 bg-[#FFF7D6]/65">
+                    <div id="gate-avatar-picker" class="grid grid-cols-4 gap-2.5 mb-4"></div>
+                    <label for="nickname-input" class="block text-lg font-black mb-2.5">Enter your nickname</label>
+                    <input id="nickname-input" type="text" maxlength="18" placeholder="Nickname..." onkeydown="if(event.key==='Enter'){event.preventDefault();enterClassroom();}" class="w-full bg-white border-3 border-[#5C3D2E] rounded-2xl px-4 py-3 text-center font-black text-lg outline-none focus:bg-[#D6ECFA]/30 mb-4">
+                    <button type="button" onclick="enterClassroom()" class="btn-bunny w-full bg-[#FF9E44] hover:bg-[#ff912b] text-[#5C3D2E] py-3.5 rounded-2xl font-black text-lg">
+                        Let’s Start!
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 3. MAIN CLASSROOM DASHBOARD ==================== -->
+        <section id="classroom-shell" class="hidden">
+            <div id="subview-topbar" class="hidden mb-5 flex flex-wrap items-center justify-between gap-3">
+                <button type="button" onclick="goHome()" class="btn-bunny bg-[#FFD6E0] px-4 py-2 rounded-2xl font-black text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-house"></i> Classroom
+                </button>
+                <div id="subview-breadcrumb" class="bg-white border-2 border-[#5C3D2E] px-4 py-1.5 rounded-2xl font-black text-sm"></div>
+            </div>
+
+            <!-- HOME DASHBOARD VIEW -->
+            <div id="view-dashboard">
+                <!-- 5 Main Illustrated Navigation Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                    <button type="button" onclick="openModule('flashcards')" class="sticker-card p-5 bg-[#FFD6E0] hover:-translate-y-1 transition text-center flex flex-col items-center justify-center gap-2.5">
+                        <div class="w-16 h-16 rounded-2xl bg-white border-3 border-[#5C3D2E] flex items-center justify-center text-4xl">🃏</div>
+                        <span class="text-lg font-black">Flashcards</span>
+                    </button>
+
+                    <button type="button" onclick="openModule('practice')" class="sticker-card p-5 bg-[#D6ECFA] hover:-translate-y-1 transition text-center flex flex-col items-center justify-center gap-2.5">
+                        <div class="w-16 h-16 rounded-2xl bg-white border-3 border-[#5C3D2E] flex items-center justify-center text-4xl">✏️</div>
+                        <span class="text-lg font-black">Unit Practice</span>
+                    </button>
+
+                    <button type="button" onclick="openModule('review')" class="sticker-card p-5 bg-[#E5D9F2] hover:-translate-y-1 transition text-center flex flex-col items-center justify-center gap-2.5">
+                        <div class="w-16 h-16 rounded-2xl bg-white border-3 border-[#5C3D2E] flex items-center justify-center text-4xl">🌸</div>
+                        <span class="text-lg font-black">Unit Review</span>
+                    </button>
+
+                    <button type="button" onclick="openModule('midterm')" class="sticker-card p-5 bg-[#D4F1E8] hover:-translate-y-1 transition text-center flex flex-col items-center justify-center gap-2.5">
+                        <div class="w-16 h-16 rounded-2xl bg-white border-3 border-[#5C3D2E] flex items-center justify-center text-4xl">🏅</div>
+                        <span class="text-lg font-black">Midterm Test</span>
+                    </button>
+
+                    <button type="button" onclick="openModule('final')" class="sticker-card p-5 bg-[#FF9E44]/65 hover:-translate-y-1 transition text-center flex flex-col items-center justify-center gap-2.5">
+                        <div class="w-16 h-16 rounded-2xl bg-white border-3 border-[#5C3D2E] flex items-center justify-center text-4xl">👑</div>
+                        <span class="text-lg font-black">Final Test</span>
+                    </button>
+                </div>
+
+                <!-- Student Progress & Skills Card -->
+                <div class="sticker-card p-5 sm:p-6 bg-[#FFFDF7]">
+                    <div class="stitch-box p-4 sm:p-5">
+                        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b-2 border-dashed border-[#5C3D2E]/25">
+                            <div class="flex items-center gap-3">
+                                <div id="dash-bunny-avatar" class="w-14 h-14 rounded-2xl bg-[#FFD6E0] border-3 border-[#5C3D2E] p-1"></div>
+                                <div>
+                                    <h2 id="dash-nickname" class="text-xl font-black">Student</h2>
+                                    <div id="dash-badges" class="flex flex-wrap gap-1.5 mt-1"></div>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2 text-xs sm:text-sm font-black">
+                                <span class="bg-[#FFF7D6] border-2 border-[#5C3D2E] px-3 py-1.5 rounded-xl">Units: <strong id="stat-units">0/16</strong></span>
+                                <span class="bg-[#FFD6E0]/60 border-2 border-[#5C3D2E] px-3 py-1.5 rounded-xl">Mastered: <strong id="stat-mastered">0</strong></span>
+                                <span class="bg-[#D6ECFA] border-2 border-[#5C3D2E] px-3 py-1.5 rounded-xl">Cards: <strong id="stat-practised">0</strong></span>
+                            </div>
+                        </div>
+
+                        <!-- 4 Skills Progress Bars -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+                            <div class="bg-[#D6ECFA]/45 border-2 border-[#5C3D2E] rounded-2xl p-3">
+                                <div class="flex justify-between text-xs font-black mb-1"><span>🎧 Listening</span><span id="sk-pct-listening">0%</span></div>
+                                <div class="h-3 bg-white border-2 border-[#5C3D2E] rounded-full overflow-hidden"><div id="sk-bar-listening" class="h-full bg-[#56B4D3] transition-all" style="width:0%"></div></div>
+                            </div>
+                            <div class="bg-[#FFD6E0]/45 border-2 border-[#5C3D2E] rounded-2xl p-3">
+                                <div class="flex justify-between text-xs font-black mb-1"><span>🎤 Speaking</span><span id="sk-pct-speaking">0%</span></div>
+                                <div class="h-3 bg-white border-2 border-[#5C3D2E] rounded-full overflow-hidden"><div id="sk-bar-speaking" class="h-full bg-[#E86F8A] transition-all" style="width:0%"></div></div>
+                            </div>
+                            <div class="bg-[#E5D9F2]/55 border-2 border-[#5C3D2E] rounded-2xl p-3">
+                                <div class="flex justify-between text-xs font-black mb-1"><span>📖 Reading</span><span id="sk-pct-reading">0%</span></div>
+                                <div class="h-3 bg-white border-2 border-[#5C3D2E] rounded-full overflow-hidden"><div id="sk-bar-reading" class="h-full bg-[#9B6FD1] transition-all" style="width:0%"></div></div>
+                            </div>
+                            <div class="bg-[#D4F1E8]/60 border-2 border-[#5C3D2E] rounded-2xl p-3">
+                                <div class="flex justify-between text-xs font-black mb-1"><span>✍️ Writing</span><span id="sk-pct-writing">0%</span></div>
+                                <div class="h-3 bg-white border-2 border-[#5C3D2E] rounded-full overflow-hidden"><div id="sk-bar-writing" class="h-full bg-[#38A169] transition-all" style="width:0%"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Scores & Weak Skills Summary -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs sm:text-sm font-black">
+                            <div class="bg-[#FFF7D6] border-2 border-[#5C3D2E] rounded-2xl p-3 flex items-center justify-between">
+                                <span>🌸 Reviews (1–4):</span>
+                                <span id="stat-review-avg" class="text-base">—</span>
+                            </div>
+                            <div class="bg-[#FFF7D6] border-2 border-[#5C3D2E] rounded-2xl p-3 flex items-center justify-between">
+                                <span>🏅 Midterm / 👑 Final:</span>
+                                <span id="stat-exam-scores" class="text-base">— / —</span>
+                            </div>
+                            <div class="bg-[#FFD6E0]/50 border-2 border-[#5C3D2E] rounded-2xl p-3 flex items-center justify-between gap-2">
+                                <span>🎯 Practise More:</span>
+                                <span id="stat-weak-skills" class="text-right">All Skills</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DYNAMIC MODULE WORKSPACE -->
+            <div id="view-workspace" class="hidden"></div>
+        </section>
+    </main>
+
+    <script>
+        /* =========================================================================
+           1. CHIBI BUNNY / BEAR MASCOT AVATARS (4 KAWAII STICKER CHARACTERS)
+           ========================================================================= */
+        const MASCOTS = [
+            {
+                id: 'pink_bunny',
+                bg: '#FFD6E0',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <rect x="28" y="8" width="16" height="34" rx="8" fill="#FFD6E0" stroke="#5C3D2E" stroke-width="4"/>
+                    <rect x="32" y="13" width="8" height="22" rx="4" fill="#FF9EBB"/>
+                    <rect x="56" y="8" width="16" height="34" rx="8" fill="#FFD6E0" stroke="#5C3D2E" stroke-width="4"/>
+                    <rect x="60" y="13" width="8" height="22" rx="4" fill="#FF9EBB"/>
+                    <circle cx="50" cy="56" r="28" fill="#FFE6D5" stroke="#5C3D2E" stroke-width="4"/>
+                    <path d="M24 50 C26 28, 74 28, 76 50 C68 42, 56 44, 50 38 C44 44, 32 42, 24 50 Z" fill="#5C3D2E"/>
+                    <path d="M36 56 Q40 51 44 56" fill="none" stroke="#5C3D2E" stroke-width="3.2" stroke-linecap="round"/>
+                    <path d="M56 56 Q60 51 64 56" fill="none" stroke="#5C3D2E" stroke-width="3.2" stroke-linecap="round"/>
+                    <ellipse cx="33" cy="63" rx="5" ry="3" fill="#FF9EBB"/>
+                    <ellipse cx="67" cy="63" rx="5" ry="3" fill="#FF9EBB"/>
+                    <path d="M46 64 Q50 69 54 64 Z" fill="#E86F8A" stroke="#5C3D2E" stroke-width="2"/>
+                    <path d="M32 82 Q50 76 68 82 L72 95 L28 95 Z" fill="#FFD6E0" stroke="#5C3D2E" stroke-width="3.5"/>
+                </svg>`
+            },
+            {
+                id: 'white_hoodie',
+                bg: '#D6ECFA',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <path d="M24 38 C10 45, 10 72, 22 76 C28 77, 30 60, 28 45 Z" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="4"/>
+                    <path d="M76 38 C90 45, 90 72, 78 76 C72 77, 70 60, 72 45 Z" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="4"/>
+                    <circle cx="50" cy="52" r="30" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="4"/>
+                    <circle cx="50" cy="54" r="23" fill="#FFE6D5" stroke="#5C3D2E" stroke-width="3"/>
+                    <path d="M28 48 C30 32, 70 32, 72 48 C64 41, 55 43, 50 38 C45 43, 36 41, 28 48 Z" fill="#5C3D2E"/>
+                    <circle cx="41" cy="55" r="3.5" fill="#5C3D2E"/>
+                    <circle cx="59" cy="55" r="3.5" fill="#5C3D2E"/>
+                    <ellipse cx="35" cy="61" rx="4.5" ry="2.8" fill="#FF9EBB"/>
+                    <ellipse cx="65" cy="61" rx="4.5" ry="2.8" fill="#FF9EBB"/>
+                    <path d="M47 63 Q50 67 53 63" fill="none" stroke="#5C3D2E" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M32 82 L68 82 L72 95 L28 95 Z" fill="#D6ECFA" stroke="#5C3D2E" stroke-width="3.5"/>
+                </svg>`
+            },
+            {
+                id: 'orange_bear',
+                bg: '#E5D9F2',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <circle cx="31" cy="28" r="11" fill="#6E4E3D" stroke="#5C3D2E" stroke-width="4"/>
+                    <circle cx="69" cy="28" r="11" fill="#6E4E3D" stroke="#5C3D2E" stroke-width="4"/>
+                    <circle cx="50" cy="55" r="28" fill="#FFE6D5" stroke="#5C3D2E" stroke-width="4"/>
+                    <path d="M24 49 C26 28, 74 28, 76 49 C68 42, 56 44, 50 38 C44 44, 32 42, 24 49 Z" fill="#5C3D2E"/>
+                    <path d="M36 55 Q40 50 44 55" fill="none" stroke="#5C3D2E" stroke-width="3.2" stroke-linecap="round"/>
+                    <path d="M56 55 Q60 50 64 55" fill="none" stroke="#5C3D2E" stroke-width="3.2" stroke-linecap="round"/>
+                    <ellipse cx="33" cy="62" rx="5" ry="3" fill="#FF9EBB"/>
+                    <ellipse cx="67" cy="62" rx="5" ry="3" fill="#FF9EBB"/>
+                    <path d="M46 63 Q50 68 54 63 Z" fill="#E86F8A" stroke="#5C3D2E" stroke-width="2"/>
+                    <path d="M28 81 L72 81 L76 95 L24 95 Z" fill="#FF9E44" stroke="#5C3D2E" stroke-width="3.5"/>
+                </svg>`
+            },
+            {
+                id: 'glasses_bunny',
+                bg: '#D4F1E8',
+                svg: `<svg viewBox="0 0 100 100" class="w-full h-full">
+                    <circle cx="32" cy="26" r="10" fill="#4A352A" stroke="#5C3D2E" stroke-width="4"/>
+                    <circle cx="68" cy="26" r="10" fill="#4A352A" stroke="#5C3D2E" stroke-width="4"/>
+                    <circle cx="50" cy="55" r="28" fill="#FFE6D5" stroke="#5C3D2E" stroke-width="4"/>
+                    <path d="M24 49 C26 28, 74 28, 76 49 C68 42, 56 44, 50 38 C44 44, 32 42, 24 49 Z" fill="#5C3D2E"/>
+                    <circle cx="40" cy="56" r="8" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="2.5"/>
+                    <circle cx="60" cy="56" r="8" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="2.5"/>
+                    <line x1="48" y1="56" x2="52" y2="56" stroke="#5C3D2E" stroke-width="2.5"/>
+                    <circle cx="40" cy="56" r="3" fill="#5C3D2E"/>
+                    <circle cx="60" cy="56" r="3" fill="#5C3D2E"/>
+                    <path d="M47 65 Q50 68 53 65" fill="none" stroke="#5C3D2E" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M30 82 L70 82 L74 95 L26 95 Z" fill="#4A352A" stroke="#5C3D2E" stroke-width="3.5"/>
+                </svg>`
+            }
+        ];
+
+        function getMascotSVG(id) {
+            return (MASCOTS.find(m => m.id === id) || MASCOTS[0]).svg;
+        }
+
+        /* =========================================================================
+           2. DIVERSE CUSTOM VECTOR SVG ILLUSTRATION LIBRARY (NO BROKEN IMAGES)
+           ========================================================================= */
+        const SVG_ART = {
+            pasta: `<svg viewBox="0 0 120 120" class="w-full h-full"><ellipse cx="60" cy="84" rx="44" ry="16" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="4"/><path d="M26 78 Q42 50 60 66 Q78 50 94 78 Z" fill="#FFD166" stroke="#5C3D2E" stroke-width="3.5"/><path d="M34 74 Q48 56 62 72 Q76 56 86 74" fill="none" stroke="#F4A261" stroke-width="3"/><circle cx="52" cy="64" r="6" fill="#E63946" stroke="#5C3D2E" stroke-width="2.5"/><circle cx="68" cy="67" r="6" fill="#E63946" stroke="#5C3D2E" stroke-width="2.5"/><path d="M58 54 Q62 46 68 52 Q62 58 58 54 Z" fill="#2A9D8F" stroke="#5C3D2E" stroke-width="2"/></svg>`,
+            popcorn: `<svg viewBox="0 0 120 120" class="w-full h-full"><circle cx="44" cy="40" r="12" fill="#FFF3B0" stroke="#5C3D2E" stroke-width="3"/><circle cx="60" cy="34" r="14" fill="#FFE66D" stroke="#5C3D2E" stroke-width="3"/><circle cx="76" cy="42" r="12" fill="#FFF3B0" stroke="#5C3D2E" stroke-width="3"/><circle cx="52" cy="46" r="12" fill="#FFE66D" stroke="#5C3D2E" stroke-width="3"/><circle cx="68" cy="47" r="11" fill="#FFF3B0" stroke="#5C3D2E" stroke-width="3"/><polygon points="34,48 86,48 78,102 42,102" fill="#FF6B6B" stroke="#5C3D2E" stroke-width="4"/><polygon points="48,48 58,48 55,102 46,102" fill="#FFFDF7"/><polygon points="66,48 76,48 72,102 63,102" fill="#FFFDF7"/><polygon points="34,48 86,48 78,102 42,102" fill="none" stroke="#5C3D2E" stroke-width="4"/></svg>`,
+            pizza: `<svg viewBox="0 0 120 120" class="w-full h-full"><path d="M22 36 Q60 18 98 36 L60 102 Z" fill="#FFD166" stroke="#5C3D2E" stroke-width="4" stroke-linejoin="round"/><path d="M22 36 Q60 18 98 36 L92 46 Q60 30 28 46 Z" fill="#F4A261" stroke="#5C3D2E" stroke-width="3.5"/><circle cx="54" cy="54" r="7" fill="#E63946" stroke="#5C3D2E" stroke-width="2.5"/><circle cx="72" cy="58" r="6" fill="#E63946" stroke="#5C3D2E" stroke-width="2.5"/><circle cx="60" cy="76" r="6" fill="#E63946" stroke="#5C3D2E" stroke-width="2.5"/><circle cx="46" cy="68" r="3" fill="#2A9D8F"/></svg>`,
+            cake: `<svg viewBox="0 0 120 120" class="w-full h-full"><rect x="57" y="22" width="6" height="18" rx="2" fill="#90DBF4" stroke="#5C3D2E" stroke-width="2.5"/><path d="M60 10 Q66 17 60 22 Q54 17 60 10 Z" fill="#FF9E44" stroke="#5C3D2E" stroke-width="2"/><rect x="32" y="40" width="56" height="24" rx="8" fill="#FFD6E0" stroke="#5C3D2E" stroke-width="3.5"/><rect x="22" y="64" width="76" height="32" rx="10" fill="#FFE5EC" stroke="#5C3D2E" stroke-width="4"/><path d="M24 76 Q36 84 48 76 Q60 84 72 76 Q84 84 96 76" fill="none" stroke="#FF758F" stroke-width="4" stroke-linecap="round"/></svg>`,
+            kite: `<svg viewBox="0 0 120 120" class="w-full h-full"><polygon points="60,16 94,50 60,84 26,50" fill="#FF758F" stroke="#5C3D2E" stroke-width="4" stroke-linejoin="round"/><polygon points="60,16 94,50 60,50" fill="#FFD166"/><polygon points="60,50 26,50 60,84" fill="#90DBF4"/><polygon points="60,16 94,50 60,84 26,50" fill="none" stroke="#5C3D2E" stroke-width="4"/><line x1="60" y1="16" x2="60" y2="84" stroke="#5C3D2E" stroke-width="3"/><line x1="26" y1="50" x2="94" y2="50" stroke="#5C3D2E" stroke-width="3"/><path d="M60 84 Q48 96 64 104 Q76 110 62 114" fill="none" stroke="#5C3D2E" stroke-width="3" stroke-linecap="round"/></svg>`,
+            bike: `<svg viewBox="0 0 120 120" class="w-full h-full"><circle cx="32" cy="80" r="18" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="4"/><circle cx="88" cy="80" r="18" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="4"/><polyline points="32,80 52,54 78,54 88,80" fill="none" stroke="#56B4D3" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><line x1="52" y1="54" x2="60" y2="80" stroke="#56B4D3" stroke-width="5"/><line x1="44" y1="46" x2="58" y2="46" stroke="#5C3D2E" stroke-width="5" stroke-linecap="round"/><polyline points="74,44 82,44 78,54" fill="none" stroke="#5C3D2E" stroke-width="4" stroke-linecap="round"/></svg>`,
+            kitten: `<svg viewBox="0 0 120 120" class="w-full h-full"><polygon points="30,44 36,20 52,36" fill="#FFD166" stroke="#5C3D2E" stroke-width="4" stroke-linejoin="round"/><polygon points="90,44 84,20 68,36" fill="#FFD166" stroke="#5C3D2E" stroke-width="4" stroke-linejoin="round"/><ellipse cx="60" cy="64" rx="34" ry="28" fill="#FFE6A7" stroke="#5C3D2E" stroke-width="4"/><circle cx="48" cy="60" r="4.5" fill="#5C3D2E"/><circle cx="72" cy="60" r="4.5" fill="#5C3D2E"/><polygon points="56,68 64,68 60,73" fill="#FF758F"/><path d="M52 75 Q56 80 60 75 Q64 80 68 75" fill="none" stroke="#5C3D2E" stroke-width="2.5" stroke-linecap="round"/><line x1="22" y1="64" x2="36" y2="66" stroke="#5C3D2E" stroke-width="2.5"/><line x1="84" y1="66" x2="98" y2="64" stroke="#5C3D2E" stroke-width="2.5"/></svg>`,
+            sail: `<svg viewBox="0 0 120 120" class="w-full h-full"><path d="M18 82 L102 82 L88 100 L32 100 Z" fill="#FF9E44" stroke="#5C3D2E" stroke-width="4" stroke-linejoin="round"/><line x1="60" y1="20" x2="60" y2="82" stroke="#5C3D2E" stroke-width="4"/><polygon points="60,22 96,74 60,74" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="3.5" stroke-linejoin="round"/><polygon points="56,30 30,74 56,74" fill="#FFD6E0" stroke="#5C3D2E" stroke-width="3.5" stroke-linejoin="round"/></svg>`,
+            sand: `<svg viewBox="0 0 120 120" class="w-full h-full"><path d="M12 96 Q60 66 108 96 Z" fill="#FFE66D" stroke="#5C3D2E" stroke-width="4"/><polygon points="44,82 52,52 76,52 84,82" fill="#FF758F" stroke="#5C3D2E" stroke-width="3.5"/><path d="M52 52 Q64 36 76 52" fill="none" stroke="#5C3D2E" stroke-width="3.5"/><rect x="26" y="64" width="6" height="24" rx="2" fill="#56B4D3" stroke="#5C3D2E" stroke-width="2.5"/></svg>`,
+            sea: `<svg viewBox="0 0 120 120" class="w-full h-full"><circle cx="86" cy="30" r="13" fill="#FFD166" stroke="#5C3D2E" stroke-width="3.5"/><path d="M12 58 Q30 46 48 58 T84 58 T108 58 L108 102 L12 102 Z" fill="#90DBF4" stroke="#5C3D2E" stroke-width="4"/><path d="M12 78 Q30 66 48 78 T84 78 T108 78" fill="none" stroke="#FFFDF7" stroke-width="4" stroke-linecap="round"/></svg>`,
+            rainbow: `<svg viewBox="0 0 120 120" class="w-full h-full"><path d="M20 86 A40 40 0 0 1 100 86" fill="none" stroke="#FF6B6B" stroke-width="8"/><path d="M28 86 A32 32 0 0 1 92 86" fill="none" stroke="#FFD166" stroke-width="8"/><path d="M36 86 A24 24 0 0 1 84 86" fill="none" stroke="#6BCB77" stroke-width="8"/><path d="M44 86 A16 16 0 0 1 76 86" fill="none" stroke="#4D96FF" stroke-width="8"/><circle cx="24" cy="88" r="12" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="3"/><circle cx="96" cy="88" r="12" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="3"/></svg>`,
+            river: `<svg viewBox="0 0 120 120" class="w-full h-full"><rect x="14" y="20" width="92" height="80" rx="18" fill="#B7E4C7" stroke="#5C3D2E" stroke-width="4"/><path d="M54 20 Q34 50 64 68 T46 100 L76 100 Q94 74 68 56 T82 20 Z" fill="#90DBF4" stroke="#5C3D2E" stroke-width="3.5"/></svg>`,
+            road: `<svg viewBox="0 0 120 120" class="w-full h-full"><rect x="14" y="20" width="92" height="80" rx="18" fill="#D8F3DC" stroke="#5C3D2E" stroke-width="4"/><polygon points="46,20 74,20 96,100 24,100" fill="#6C757D" stroke="#5C3D2E" stroke-width="3.5"/><line x1="60" y1="28" x2="60" y2="42" stroke="#FFFDF7" stroke-width="4" stroke-linecap="round"/><line x1="60" y1="54" x2="60" y2="70" stroke="#FFFDF7" stroke-width="4" stroke-linecap="round"/><line x1="60" y1="82" x2="60" y2="94" stroke="#FFFDF7" stroke-width="4" stroke-linecap="round"/></svg>`,
+            chicken: `<svg viewBox="0 0 120 120" class="w-full h-full"><path d="M36 68 Q28 42 54 36 Q82 34 84 62 Q84 82 56 82 Z" fill="#F4A261" stroke="#5C3D2E" stroke-width="4"/><line x1="36" y1="68" x2="22" y2="82" stroke="#5C3D2E" stroke-width="6" stroke-linecap="round"/><circle cx="20" cy="84" r="6" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="3"/></svg>`,
+            chips: `<svg viewBox="0 0 120 120" class="w-full h-full"><rect x="38" y="26" width="9" height="44" rx="3" fill="#FFD166" stroke="#5C3D2E" stroke-width="3"/><rect x="50" y="20" width="9" height="48" rx="3" fill="#FFE66D" stroke="#5C3D2E" stroke-width="3"/><rect x="62" y="24" width="9" height="46" rx="3" fill="#FFD166" stroke="#5C3D2E" stroke-width="3"/><rect x="74" y="28" width="9" height="42" rx="3" fill="#FFE66D" stroke="#5C3D2E" stroke-width="3"/><path d="M32 54 L88 54 L80 100 L40 100 Z" fill="#FF6B6B" stroke="#5C3D2E" stroke-width="4" stroke-linejoin="round"/></svg>`,
+            fish: `<svg viewBox="0 0 120 120" class="w-full h-full"><polygon points="84,60 106,40 106,80" fill="#FF9E44" stroke="#5C3D2E" stroke-width="4" stroke-linejoin="round"/><ellipse cx="54" cy="60" rx="34" ry="22" fill="#90DBF4" stroke="#5C3D2E" stroke-width="4"/><circle cx="36" cy="55" r="4" fill="#5C3D2E"/><path d="M54 44 Q62 60 54 76" fill="none" stroke="#5C3D2E" stroke-width="3"/></svg>`,
+            milk: `<svg viewBox="0 0 120 120" class="w-full h-full"><polygon points="40,34 60,20 80,34 80,98 40,98" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="4" stroke-linejoin="round"/><rect x="40" y="54" width="40" height="24" fill="#90DBF4" stroke="#5C3D2E" stroke-width="3"/><line x1="40" y1="34" x2="80" y2="34" stroke="#5C3D2E" stroke-width="3.5"/></svg>`,
+            box: `<svg viewBox="0 0 120 120" class="w-full h-full"><polygon points="60,22 98,40 98,84 60,102 22,84 22,40" fill="#E9C46A" stroke="#5C3D2E" stroke-width="4" stroke-linejoin="round"/><polyline points="22,40 60,58 98,40" fill="none" stroke="#5C3D2E" stroke-width="3.5"/><line x1="60" y1="58" x2="60" y2="102" stroke="#5C3D2E" stroke-width="3.5"/></svg>`,
+            fox: `<svg viewBox="0 0 120 120" class="w-full h-full"><polygon points="28,48 34,18 54,36" fill="#FF7B00" stroke="#5C3D2E" stroke-width="4"/><polygon points="92,48 86,18 66,36" fill="#FF7B00" stroke="#5C3D2E" stroke-width="4"/><polygon points="26,52 60,34 94,52 60,94" fill="#FF7B00" stroke="#5C3D2E" stroke-width="4" stroke-linejoin="round"/><polygon points="26,52 46,66 60,94" fill="#FFFDF7"/><polygon points="94,52 74,66 60,94" fill="#FFFDF7"/><circle cx="46" cy="56" r="4" fill="#5C3D2E"/><circle cx="74" cy="56" r="4" fill="#5C3D2E"/><circle cx="60" cy="88" r="5" fill="#5C3D2E"/></svg>`,
+            ox: `<svg viewBox="0 0 120 120" class="w-full h-full"><path d="M32 36 Q18 24 28 16" fill="none" stroke="#FFFDF7" stroke-width="6" stroke-linecap="round"/><path d="M88 36 Q102 24 92 16" fill="none" stroke="#FFFDF7" stroke-width="6" stroke-linecap="round"/><rect x="30" y="34" width="60" height="58" rx="22" fill="#8D6E63" stroke="#5C3D2E" stroke-width="4"/><ellipse cx="60" cy="74" rx="22" ry="14" fill="#FFCCBC" stroke="#5C3D2E" stroke-width="3"/><circle cx="44" cy="52" r="4" fill="#5C3D2E"/><circle cx="76" cy="52" r="4" fill="#5C3D2E"/><circle cx="52" cy="74" r="3" fill="#5C3D2E"/><circle cx="68" cy="74" r="3" fill="#5C3D2E"/></svg>`,
+            jam: `<svg viewBox="0 0 120 120" class="w-full h-full"><rect x="34" y="38" width="52" height="60" rx="14" fill="#FF6B6B" stroke="#5C3D2E" stroke-width="4"/><rect x="30" y="24" width="60" height="16" rx="6" fill="#FFD6E0" stroke="#5C3D2E" stroke-width="3.5"/><rect x="42" y="54" width="36" height="24" rx="6" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="2.5"/></svg>`,
+            juice: `<svg viewBox="0 0 120 120" class="w-full h-full"><polyline points="68,36 78,16 90,18" fill="none" stroke="#56B4D3" stroke-width="5" stroke-linecap="round"/><rect x="38" y="36" width="44" height="62" rx="8" fill="#FF9E44" stroke="#5C3D2E" stroke-width="4"/><circle cx="60" cy="68" r="12" fill="#FFD166" stroke="#5C3D2E" stroke-width="2.5"/></svg>`,
+            jelly: `<svg viewBox="0 0 120 120" class="w-full h-full"><ellipse cx="60" cy="92" rx="44" ry="12" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="3.5"/><path d="M32 88 L40 46 Q60 36 80 46 L88 88 Z" fill="#FF8FA3" stroke="#5C3D2E" stroke-width="4"/><circle cx="60" cy="36" r="7" fill="#E63946" stroke="#5C3D2E" stroke-width="2.5"/></svg>`,
+            van: `<svg viewBox="0 0 120 120" class="w-full h-full"><rect x="18" y="40" width="84" height="44" rx="12" fill="#90DBF4" stroke="#5C3D2E" stroke-width="4"/><rect x="28" y="48" width="24" height="16" rx="4" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="2.5"/><rect x="60" y="48" width="28" height="16" rx="4" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="2.5"/><circle cx="38" cy="86" r="11" fill="#5C3D2E"/><circle cx="82" cy="86" r="11" fill="#5C3D2E"/></svg>`,
+            village: `<svg viewBox="0 0 120 120" class="w-full h-full"><polygon points="22,56 44,34 66,56" fill="#FF758F" stroke="#5C3D2E" stroke-width="3.5"/><rect x="26" y="56" width="36" height="36" fill="#FFF3B0" stroke="#5C3D2E" stroke-width="3.5"/><polygon points="58,62 78,42 98,62" fill="#FF9E44" stroke="#5C3D2E" stroke-width="3.5"/><rect x="62" y="62" width="32" height="30" fill="#D8F3DC" stroke="#5C3D2E" stroke-width="3.5"/></svg>`,
+            volleyball: `<svg viewBox="0 0 120 120" class="w-full h-full"><circle cx="60" cy="60" r="38" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="4"/><path d="M60 22 Q72 44 60 60 Q40 48 24 52" fill="none" stroke="#5C3D2E" stroke-width="3.5"/><path d="M60 60 Q82 62 94 76" fill="none" stroke="#5C3D2E" stroke-width="3.5"/><path d="M60 60 Q46 80 48 96" fill="none" stroke="#5C3D2E" stroke-width="3.5"/></svg>`,
+            yams: `<svg viewBox="0 0 120 120" class="w-full h-full"><ellipse cx="56" cy="64" rx="34" ry="18" transform="rotate(-22 56 64)" fill="#9D4EDD" stroke="#5C3D2E" stroke-width="4"/><ellipse cx="68" cy="74" rx="28" ry="14" transform="rotate(15 68 74)" fill="#C77DFF" stroke="#5C3D2E" stroke-width="3.5"/></svg>`,
+            yoyos: `<svg viewBox="0 0 120 120" class="w-full h-full"><path d="M60 16 Q74 32 60 46" fill="none" stroke="#5C3D2E" stroke-width="3.5"/><circle cx="60" cy="72" r="28" fill="#FF6B6B" stroke="#5C3D2E" stroke-width="4"/><circle cx="60" cy="72" r="14" fill="#FFD166" stroke="#5C3D2E" stroke-width="3"/></svg>`,
+            yogurt: `<svg viewBox="0 0 120 120" class="w-full h-full"><polygon points="34,44 86,44 78,96 42,96" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="4"/><rect x="30" y="34" width="60" height="12" rx="5" fill="#FF8FA3" stroke="#5C3D2E" stroke-width="3.5"/><circle cx="60" cy="70" r="10" fill="#FF758F"/></svg>`,
+            zebu: `<svg viewBox="0 0 120 120" class="w-full h-full"><ellipse cx="60" cy="68" rx="34" ry="22" fill="#D4A373" stroke="#5C3D2E" stroke-width="4"/><circle cx="52" cy="44" r="13" fill="#D4A373" stroke="#5C3D2E" stroke-width="3.5"/><circle cx="32" cy="54" r="14" fill="#FAEDCD" stroke="#5C3D2E" stroke-width="3.5"/><circle cx="28" cy="52" r="3" fill="#5C3D2E"/></svg>`,
+            zebra: `<svg viewBox="0 0 120 120" class="w-full h-full"><rect x="34" y="32" width="52" height="62" rx="22" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="4"/><line x1="36" y1="48" x2="50" y2="52" stroke="#5C3D2E" stroke-width="5"/><line x1="84" y1="48" x2="70" y2="52" stroke="#5C3D2E" stroke-width="5"/><line x1="36" y1="62" x2="50" y2="64" stroke="#5C3D2E" stroke-width="5"/><line x1="84" y1="62" x2="70" y2="64" stroke="#5C3D2E" stroke-width="5"/><circle cx="48" cy="54" r="3.5" fill="#5C3D2E"/><circle cx="72" cy="54" r="3.5" fill="#5C3D2E"/><ellipse cx="60" cy="78" rx="16" ry="11" fill="#ADB5BD" stroke="#5C3D2E" stroke-width="3"/></svg>`,
+            zoo: `<svg viewBox="0 0 120 120" class="w-full h-full"><rect x="24" y="36" width="10" height="62" fill="#F4A261" stroke="#5C3D2E" stroke-width="3.5"/><rect x="86" y="36" width="10" height="62" fill="#F4A261" stroke="#5C3D2E" stroke-width="3.5"/><path d="M22 40 Q60 16 98 40 L98 54 Q60 32 22 54 Z" fill="#6BCB77" stroke="#5C3D2E" stroke-width="3.5"/></svg>`,
+            driving: `<svg viewBox="0 0 120 120" class="w-full h-full"><path d="M30 56 L42 36 L78 36 L90 56 Z" fill="#FFD166" stroke="#5C3D2E" stroke-width="3.5"/><rect x="20" y="54" width="80" height="28" rx="10" fill="#FF6B6B" stroke="#5C3D2E" stroke-width="4"/><circle cx="38" cy="84" r="11" fill="#5C3D2E"/><circle cx="82" cy="84" r="11" fill="#5C3D2E"/></svg>`,
+            riding: `<svg viewBox="0 0 120 120" class="w-full h-full"><circle cx="34" cy="82" r="16" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="4"/><circle cx="86" cy="82" r="16" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="4"/><polyline points="34,82 54,58 76,58 86,82" fill="none" stroke="#6BCB77" stroke-width="5"/><circle cx="58" cy="34" r="10" fill="#FFE6D5" stroke="#5C3D2E" stroke-width="3.5"/></svg>`,
+            sliding: `<svg viewBox="0 0 120 120" class="w-full h-full"><line x1="28" y1="30" x2="28" y2="96" stroke="#5C3D2E" stroke-width="4"/><line x1="42" y1="30" x2="42" y2="96" stroke="#5C3D2E" stroke-width="4"/><path d="M42 36 Q66 40 76 68 T102 92" fill="none" stroke="#56B4D3" stroke-width="10" stroke-linecap="round"/><path d="M42 36 Q66 40 76 68 T102 92" fill="none" stroke="#5C3D2E" stroke-width="3" stroke-linecap="round"/></svg>`,
+            grapes: `<svg viewBox="0 0 120 120" class="w-full h-full"><path d="M60 22 Q74 14 80 26 Q66 32 60 22 Z" fill="#6BCB77" stroke="#5C3D2E" stroke-width="2.5"/><circle cx="48" cy="46" r="12" fill="#9D4EDD" stroke="#5C3D2E" stroke-width="3.5"/><circle cx="72" cy="46" r="12" fill="#9D4EDD" stroke="#5C3D2E" stroke-width="3.5"/><circle cx="42" cy="66" r="12" fill="#C77DFF" stroke="#5C3D2E" stroke-width="3.5"/><circle cx="60" cy="66" r="12" fill="#9D4EDD" stroke="#5C3D2E" stroke-width="3.5"/><circle cx="78" cy="66" r="12" fill="#C77DFF" stroke="#5C3D2E" stroke-width="3.5"/><circle cx="60" cy="86" r="12" fill="#9D4EDD" stroke="#5C3D2E" stroke-width="3.5"/></svg>`,
+            table: `<svg viewBox="0 0 120 120" class="w-full h-full"><ellipse cx="60" cy="48" rx="44" ry="14" fill="#E9C46A" stroke="#5C3D2E" stroke-width="4"/><line x1="34" y1="58" x2="30" y2="98" stroke="#5C3D2E" stroke-width="5" stroke-linecap="round"/><line x1="86" y1="58" x2="90" y2="98" stroke="#5C3D2E" stroke-width="5" stroke-linecap="round"/><line x1="60" y1="62" x2="60" y2="94" stroke="#5C3D2E" stroke-width="5" stroke-linecap="round"/></svg>`,
+            number_card: `<svg viewBox="0 0 120 120" class="w-full h-full"><rect x="24" y="24" width="72" height="72" rx="18" fill="#FFD166" stroke="#5C3D2E" stroke-width="4"/><circle cx="60" cy="60" r="24" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="3"/></svg>`,
+            brother: `<svg viewBox="0 0 120 120" class="w-full h-full"><circle cx="60" cy="52" r="26" fill="#FFE6D5" stroke="#5C3D2E" stroke-width="4"/><path d="M34 46 C38 24, 82 24, 86 46 C74 36, 46 36, 34 46 Z" fill="#5C3D2E"/><circle cx="50" cy="52" r="3.5" fill="#5C3D2E"/><circle cx="70" cy="52" r="3.5" fill="#5C3D2E"/><path d="M53 62 Q60 68 67 62" fill="none" stroke="#5C3D2E" stroke-width="3" stroke-linecap="round"/><path d="M36 80 L84 80 L90 98 L30 98 Z" fill="#56B4D3" stroke="#5C3D2E" stroke-width="3.5"/></svg>`,
+            grandmother: `<svg viewBox="0 0 120 120" class="w-full h-full"><circle cx="60" cy="24" r="12" fill="#E9ECEF" stroke="#5C3D2E" stroke-width="3.5"/><circle cx="60" cy="54" r="26" fill="#FFE6D5" stroke="#5C3D2E" stroke-width="4"/><path d="M34 50 C36 30, 84 30, 86 50" fill="none" stroke="#CED4DA" stroke-width="8"/><circle cx="50" cy="54" r="6" fill="none" stroke="#5C3D2E" stroke-width="2.5"/><circle cx="70" cy="54" r="6" fill="none" stroke="#5C3D2E" stroke-width="2.5"/><path d="M36 82 L84 82 L90 98 L30 98 Z" fill="#C77DFF" stroke="#5C3D2E" stroke-width="3.5"/></svg>`,
+            sister: `<svg viewBox="0 0 120 120" class="w-full h-full"><circle cx="32" cy="40" r="10" fill="#5C3D2E"/><circle cx="88" cy="40" r="10" fill="#5C3D2E"/><circle cx="60" cy="54" r="26" fill="#FFE6D5" stroke="#5C3D2E" stroke-width="4"/><path d="M34 48 C38 26, 82 26, 86 48" fill="#5C3D2E"/><circle cx="50" cy="54" r="3.5" fill="#5C3D2E"/><circle cx="70" cy="54" r="3.5" fill="#5C3D2E"/><path d="M53 63 Q60 69 67 63" fill="none" stroke="#5C3D2E" stroke-width="3" stroke-linecap="round"/><path d="M36 82 L84 82 L90 98 L30 98 Z" fill="#FF8FA3" stroke="#5C3D2E" stroke-width="3.5"/></svg>`,
+            shirts: `<svg viewBox="0 0 120 120" class="w-full h-full"><polygon points="42,28 78,28 98,46 86,58 76,50 76,94 44,94 44,50 34,58 22,46" fill="#90DBF4" stroke="#5C3D2E" stroke-width="4" stroke-linejoin="round"/><polyline points="48,28 60,42 72,28" fill="none" stroke="#5C3D2E" stroke-width="3"/></svg>`,
+            shoes: `<svg viewBox="0 0 120 120" class="w-full h-full"><path d="M22 76 L26 52 L48 52 L58 66 L94 70 Q100 72 98 84 L22 84 Z" fill="#FF6B6B" stroke="#5C3D2E" stroke-width="4" stroke-linejoin="round"/><rect x="22" y="78" width="76" height="8" rx="3" fill="#FFFDF7" stroke="#5C3D2E" stroke-width="3"/></svg>`,
+            shorts: `<svg viewBox="0 0 120 120" class="w-full h-full"><polygon points="32,32 88,32 94,84 64,84 60,64 56,84 26,84" fill="#FFD166" stroke="#5C3D2E" stroke-width="4" stroke-linejoin="round"/><line x1="32" y1="42" x2="88" y2="42" stroke="#5C3D2E" stroke-width="3"/></svg>`,
+            teapot: `<svg viewBox="0 0 120 120" class="w-full h-full"><path d="M84 56 Q104 42 102 32" fill="none" stroke="#5C3D2E" stroke-width="6" stroke-linecap="round"/><path d="M36 52 Q18 52 18 68 Q18 82 36 82" fill="none" stroke="#5C3D2E" stroke-width="5"/><ellipse cx="60" cy="68" rx="28" ry="24" fill="#FFD6E0" stroke="#5C3D2E" stroke-width="4"/><circle cx="60" cy="40" r="6" fill="#FF758F" stroke="#5C3D2E" stroke-width="3"/></svg>`,
+            tent: `<svg viewBox="0 0 120 120" class="w-full h-full"><polygon points="60,24 102,92 18,92" fill="#FFD166" stroke="#5C3D2E" stroke-width="4" stroke-linejoin="round"/><polygon points="60,52 76,92 44,92" fill="#5C3D2E"/></svg>`,
+            blanket: `<svg viewBox="0 0 120 120" class="w-full h-full"><rect x="24" y="34" width="72" height="52" rx="12" fill="#C77DFF" stroke="#5C3D2E" stroke-width="4"/><line x1="24" y1="52" x2="96" y2="52" stroke="#FFD166" stroke-width="5"/><line x1="24" y1="68" x2="96" y2="68" stroke="#90DBF4" stroke-width="5"/></svg>`
+        };
+
+        function renderIllustration(key, label = '') {
+            if (SVG_ART[key]) return SVG_ART[key];
+            if (key && key.startsWith('num_')) {
+                const n = key.replace('num_', '');
+                return `<svg viewBox="0 0 120 120" class="w-full h-full"><rect x="20" y="20" width="80" height="80" rx="20" fill="#FFD6E0" stroke="#5C3D2E" stroke-width="4"/><text x="60" y="72" text-anchor="middle" font-size="40" font-weight="900" fill="#5C3D2E">${n}</text></svg>`;
+            }
+            const safeTxt = (label || key || 'ABC').slice(0, 10);
+            return `<svg viewBox="0 0 120 120" class="w-full h-full"><rect x="18" y="18" width="84" height="84" rx="22" fill="#D6ECFA" stroke="#5C3D2E" stroke-width="4"/><text x="60" y="68" text-anchor="middle" font-size="22" font-weight="900" fill="#5C3D2E">${safeTxt}</text></svg>`;
+        }
+
+        /* =========================================================================
+           3. YOUTH BRITISH ENGLISH (en-GB) VOICE ENGINE + FIXED SLOW PLAYBACK
+           ========================================================================= */
+        const ukAudio = {
+            girlVoice: null,
+            boyVoice: null,
+            hasUK: false,
+            preferredRole: 'girl', // 'girl' | 'boy'
+            safetyTimer: null
+        };
+
+        function initUKVoices() {
+            if (!('speechSynthesis' in window)) {
+                markUKUnavailable();
+                return;
+            }
+            const pick = () => {
+                const all = window.speechSynthesis.getVoices();
+                if (!all.length) return;
+
+                // Strictly filter for British English (en-GB) ONLY
+                const gb = all.filter(v => {
+                    const lang = (v.lang || '').toLowerCase().replace('_', '-');
+                    return lang === 'en-gb' || lang.startsWith('en-gb-');
+                });
+
+                if (gb.length === 0) {
+                    markUKUnavailable();
+                    return;
+                }
+
+                ukAudio.hasUK = true;
+                document.getElementById('uk-voice-warning').classList.add('hidden');
+
+                // Exclude deep adult bass voices unless no lighter UK voice exists
+                const deepAdultNames = ['george', 'daniel', 'arthur', 'brian', 'malcolm'];
+                const youthfulFemaleNames = ['maisie', 'libby', 'sonia', 'kate', 'serena', 'hazel', 'amy', 'emma', 'google uk english female'];
+                const youthfulMaleNames = ['ryan', 'alfie', 'oliver', 'thomas', 'google uk english male'];
+
+                const lightVoices = gb.filter(v => !deepAdultNames.some(d => v.name.toLowerCase().includes(d)));
+                const pool = lightVoices.length ? lightVoices : gb;
+
+                ukAudio.girlVoice =
+                    pool.find(v => youthfulFemaleNames.some(f => v.name.toLowerCase().includes(f))) ||
+                    pool[0];
+
+                ukAudio.boyVoice =
+                    pool.find(v => youthfulMaleNames.some(m => v.name.toLowerCase().includes(m)) && v !== ukAudio.girlVoice) ||
+                    pool.find(v => v !== ukAudio.girlVoice) ||
+                    ukAudio.girlVoice;
+            };
+            pick();
+            window.speechSynthesis.onvoiceschanged = pick;
+        }
+
+        function markUKUnavailable() {
+            ukAudio.hasUK = false;
+            document.getElementById('uk-voice-warning').classList.remove('hidden');
+        }
+
+        function togglePreferredSpeaker() {
+            ukAudio.preferredRole = ukAudio.preferredRole === 'girl' ? 'boy' : 'girl';
+            document.getElementById('voice-role-btn').textContent = ukAudio.preferredRole === 'girl' ? 'UK Girl' : 'UK Boy';
+            speakUK(ukAudio.preferredRole === 'girl' ? 'Hello! Ready to learn!' : 'Hi! Let us practise!', { role: ukAudio.preferredRole });
+        }
+
+        function stopAudio() {
+            if (ukAudio.safetyTimer) {
+                clearTimeout(ukAudio.safetyTimer);
+                ukAudio.safetyTimer = null;
+            }
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            document.querySelectorAll('.uk-play-indicator').forEach(el => el.classList.remove('ring-4', 'ring-[#FF9E44]'));
+        }
+
+        // Split long sentences cleanly at natural punctuation so speech never truncates or distorts
+        function chunkTextForSpeech(text) {
+            const clean = String(text).replace(/\s+/g, ' ').trim();
+            const parts = clean.match(/[^.!?]+[.!?]*/g) || [clean];
+            return parts.map(p => p.trim()).filter(Boolean);
+        }
+
+        function speakUK(text, opts = {}) {
+            if (!('speechSynthesis' in window) || !ukAudio.hasUK) {
+                showToast('British English (en-GB) voice not detected.');
+                return;
+            }
+            stopAudio();
+
+            const role = opts.role || ukAudio.preferredRole;
+            const speedMode = opts.speed || 'normal'; // 'normal' (1.0), 'slow' (0.75), 'xslow' (0.55)
+            const rateMap = { normal: 0.96, slow: 0.75, xslow: 0.56 };
+            const rate = rateMap[speedMode] || 0.96;
+
+            // Pitch tuning: youthful bright child-friendly tone without robotic distortion
+            const basePitch = role === 'girl' ? 1.16 : 1.12;
+            const voice = role === 'boy' ? ukAudio.boyVoice : ukAudio.girlVoice;
+
+            const chunks = chunkTextForSpeech(text);
+            chunks.forEach((chunk, idx) => {
+                const u = new SpeechSynthesisUtterance(chunk);
+                u.lang = 'en-GB';
+                if (voice) u.voice = voice;
+                u.rate = rate;
+                u.pitch = basePitch;
+                u.volume = 1.0;
+
+                if (idx === chunks.length - 1) {
+                    u.onend = () => stopAudio();
+                    u.onerror = () => stopAudio();
+                }
+                window.speechSynthesis.speak(u);
+            });
+
+            // Mobile Safari / Chrome safety reset so UI never stays stuck
+            const estMs = Math.max(2500, text.length * (speedMode === 'normal' ? 95 : 155));
+            ukAudio.safetyTimer = setTimeout(() => stopAudio(), estMs);
+        }
+
+        function renderAudioBar(text, role = '') {
+            const safe = escAttr(text);
+            const r = role ? `'${role}'` : 'null';
+            return `
+                <div class="inline-flex flex-wrap items-center justify-center gap-1.5 bg-[#D6ECFA]/65 border-2 border-[#5C3D2E] rounded-2xl px-3 py-2">
+                    <button type="button" onclick="speakUK('${safe}', {role:${r}, speed:'normal'})" class="btn-bunny bg-white px-3 py-1 rounded-xl text-xs font-black flex items-center gap-1">
+                        <i class="fa-solid fa-play text-[#3182CE]"></i> Play (1.0x)
+                    </button>
+                    <button type="button" onclick="speakUK('${safe}', {role:${r}, speed:'slow'})" class="btn-bunny bg-[#FFF7D6] px-3 py-1 rounded-xl text-xs font-black flex items-center gap-1">
+                        🐢 Slow (0.75x)
+                    </button>
+                    <button type="button" onclick="speakUK('${safe}', {role:${r}, speed:'xslow'})" class="btn-bunny bg-[#FFD6E0] px-2.5 py-1 rounded-xl text-xs font-black">
+                        0.55x
+                    </button>
+                    <button type="button" onclick="speakUK('${safe}', {role:${r}, speed:'normal'})" class="btn-bunny bg-[#D4F1E8] px-2.5 py-1 rounded-xl text-xs font-black" title="Replay">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        /* =========================================================================
+           4. TRUE PHONICS PHONEME ENGINE (PURE PHONEMES VS LETTER NAMES)
+           ========================================================================= */
+        let sharedAudioCtx = null;
+        function getAudioCtx() {
+            if (!sharedAudioCtx) {
+                const AC = window.AudioContext || window.webkitAudioContext;
+                if (AC) sharedAudioCtx = new AC();
+            }
+            if (sharedAudioCtx && sharedAudioCtx.state === 'suspended') {
+                sharedAudioCtx.resume();
+            }
+            return sharedAudioCtx;
+        }
+
+        // Accurate acoustic synthesis for isolated consonant/vowel phonemes (never reads letter names "bee"/"pee")
+        function playPhonemeSound(phonemeKey) {
+            stopAudio();
+            const ctx = getAudioCtx();
+            if (!ctx) return;
+
+            const now = ctx.currentTime;
+            const gain = ctx.createGain();
+            gain.connect(ctx.destination);
+
+            // Helper: filtered noise burst for unvoiced/voiced fricatives & plosives
+            const playNoise = (dur, filterType, freq, q, vol = 0.28, delay = 0) => {
+                const bufSize = Math.floor(ctx.sampleRate * dur);
+                const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+                const data = buf.getChannelData(0);
+                for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
+
+                const src = ctx.createBufferSource();
+                src.buffer = buf;
+
+                const filter = ctx.createBiquadFilter();
+                filter.type = filterType;
+                filter.frequency.setValueAtTime(freq, now + delay);
+                filter.Q.setValueAtTime(q, now + delay);
+
+                const g = ctx.createGain();
+                g.gain.setValueAtTime(0.001, now + delay);
+                g.gain.linearRampToValueAtTime(vol, now + delay + 0.015);
+                g.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+
+                src.connect(filter);
+                filter.connect(g);
+                g.connect(ctx.destination);
+                src.start(now + delay);
+                src.stop(now + delay + dur);
+            };
+
+            // Helper: formant harmonic tone for vowels and voiced continuants
+            const playFormant = (dur, f0, f1, f2, vol = 0.22, delay = 0) => {
+                const osc = ctx.createOscillator();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(f0, now + delay);
+
+                const b1 = ctx.createBiquadFilter();
+                b1.type = 'bandpass';
+                b1.frequency.setValueAtTime(f1, now + delay);
+                b1.Q.setValueAtTime(5, now + delay);
+
+                const b2 = ctx.createBiquadFilter();
+                b2.type = 'bandpass';
+                b2.frequency.setValueAtTime(f2, now + delay);
+                b2.Q.setValueAtTime(6, now + delay);
+
+                const g = ctx.createGain();
+                g.gain.setValueAtTime(0.001, now + delay);
+                g.gain.linearRampToValueAtTime(vol, now + delay + 0.03);
+                g.gain.exponentialRampToValueAtTime(0.001, now + delay + dur);
+
+                osc.connect(b1);
+                osc.connect(b2);
+                b1.connect(g);
+                b2.connect(g);
+                g.connect(ctx.destination);
+                osc.start(now + delay);
+                osc.stop(now + delay + dur);
+            };
+
+            switch (phonemeKey) {
+                case '/p/': // Pure voiceless bilabial puff (no "puh")
+                    playNoise(0.075, 'lowpass', 900, 1.2, 0.38);
+                    break;
+                case '/k/': // Pure voiceless velar burst
+                    playNoise(0.08, 'bandpass', 1700, 2.2, 0.36);
+                    break;
+                case '/s/': // Crisp alveolar hiss
+                    playNoise(0.32, 'highpass', 4800, 1.8, 0.24);
+                    break;
+                case '/r/': // Voiced postalveolar approximant
+                    playFormant(0.28, 220, 420, 1250, 0.24);
+                    break;
+                case '/ɪ/': // Short kit vowel
+                    playFormant(0.22, 240, 390, 2100, 0.25);
+                    break;
+                case '/ks/': // /k/ + /s/ cluster (box, fox, ox)
+                    playNoise(0.06, 'bandpass', 1700, 2.2, 0.34, 0);
+                    playNoise(0.24, 'highpass', 4800, 1.8, 0.22, 0.065);
+                    break;
+                case '/dʒ/': // Voiced affricate (jam, juice, jelly)
+                    playFormant(0.07, 190, 300, 1800, 0.22, 0);
+                    playNoise(0.18, 'bandpass', 2600, 2.5, 0.26, 0.03);
+                    break;
+                case '/v/': // Voiced labiodental fricative (van, village)
+                    playFormant(0.26, 200, 320, 1100, 0.2, 0);
+                    playNoise(0.26, 'bandpass', 1400, 1.5, 0.14, 0);
+                    break;
+                case '/j/': // Palatal glide (yams, yogurt, yo-yo)
+                    playFormant(0.24, 245, 310, 2350, 0.25);
+                    break;
+                case '/z/': // Voiced alveolar buzz (zebra, zoo)
+                    playFormant(0.3, 205, 340, 1600, 0.2, 0);
+                    playNoise(0.3, 'highpass', 4400, 2.0, 0.16, 0);
+                    break;
+                case '/aɪ/': // Diphthong glide (driving, riding, sliding)
+                    playFormant(0.34, 235, 750, 1250, 0.24, 0);
+                    playFormant(0.2, 250, 380, 2200, 0.22, 0.16);
+                    break;
+                case '/eɪ/': // Diphthong glide (cake, grapes, table)
+                    playFormant(0.34, 235, 520, 1900, 0.24, 0);
+                    playFormant(0.2, 250, 360, 2300, 0.22, 0.16);
+                    break;
+                case '/n/': // Voiced alveolar nasal (eleven, thirteen)
+                    playFormant(0.28, 210, 280, 1450, 0.25);
+                    break;
+                case '/ə/': // Schwa ending (brother, sister, grandmother)
+                    playFormant(0.22, 225, 500, 1500, 0.24);
+                    break;
+                case '/ʃ/': // Voiceless postalveolar hush (shirts, shoes, shorts)
+                    playNoise(0.32, 'bandpass', 2500, 2.2, 0.28);
+                    break;
+                case '/t/': // Pure voiceless alveolar tap (tent, teapot)
+                    playNoise(0.065, 'highpass', 3200, 1.5, 0.36);
+                    break;
+                default:
+                    playFormant(0.22, 230, 500, 1500, 0.22);
+            }
+        }
+
+        function playPhonicsBlend(segments, fullWord) {
+            segments.forEach((seg, i) => {
+                setTimeout(() => playPhonemeSound(seg), i * 360);
+            });
+            setTimeout(() => speakUK(fullWord, { role: 'girl', speed: 'normal' }), segments.length * 360 + 250);
+        }
+
+        /* =========================================================================
+           5. COMPLETE GLOBAL SUCCESS 2 CURRICULUM (UNITS 1–16)
+           ========================================================================= */
+        const CURRICULUM = [
+            {
+                unit: 1, title: "At my birthday party", colour: "#FFD6E0",
+                phonics: {
+                    letter: "P", sound: "/p/", position: "beginning",
+                    words: ["pasta", "popcorn", "pizza"],
+                    blend: { parts: ["p", "a", "s", "t", "a"], phonemes: ["/p/", "/ɪ/", "/s/", "/t/", "/ə/"], word: "pasta" }
+                },
+                vocab: [
+                    { word: "pasta", vi: "mì Ý", art: "pasta", pattern: "The pasta is yummy.", patternVi: "Món mì Ý thật ngon.", expr: "Happy birthday!" },
+                    { word: "popcorn", vi: "bỏng ngô", art: "popcorn", pattern: "The popcorn is yummy.", patternVi: "Bỏng ngô thật ngon.", expr: "Thank you!" },
+                    { word: "pizza", vi: "bánh pi-da", art: "pizza", pattern: "The pizza is yummy.", patternVi: "Bánh pi-da thật ngon.", expr: "Yummy!" }
+                ],
+                dialogue: [
+                    { role: "girl", line: "Happy birthday, Minh! Have some pizza." },
+                    { role: "boy", line: "Thank you! The pizza is yummy." }
+                ],
+                dialogueQ: { q: "What food does Minh eat?", opts: ["Pizza", "Pasta", "Popcorn"], ansIdx: 0 },
+                passage: "Today is Mai's birthday party. There is pizza, pasta and popcorn on the table. Mai likes the pizza. It is yummy.",
+                passageTF: { stmt: "Mai likes the pizza.", ans: "True" },
+                passageQ: { q: "Where is the food?", opts: ["On the table", "In the box", "Near the tent"], ansIdx: 0 }
+            },
+            {
+                unit: 2, title: "In the backyard", colour: "#D6ECFA",
+                phonics: {
+                    letter: "K", sound: "/k/", position: "beginning",
+                    words: ["kite", "bike", "kitten"],
+                    blend: { parts: ["k", "i", "t", "e"], phonemes: ["/k/", "/aɪ/", "/t/"], word: "kite" }
+                },
+                vocab: [
+                    { word: "kite", vi: "con diều", art: "kite", pattern: "He is flying a kite.", patternVi: "Cậu ấy đang thả diều.", expr: "Look at the kite!" },
+                    { word: "bike", vi: "xe đạp", art: "bike", pattern: "She is riding a bike.", patternVi: "Cô ấy đang đạp xe đạp.", expr: "Let's ride a bike!" },
+                    { word: "kitten", vi: "mèo con", art: "kitten", pattern: "She is playing with a kitten.", patternVi: "Cô ấy đang chơi với mèo con.", expr: "What a cute kitten!" }
+                ],
+                dialogue: [
+                    { role: "boy", line: "Where is Lan?" },
+                    { role: "girl", line: "She is in the backyard. She is playing with a kitten." }
+                ],
+                dialogueQ: { q: "What is Lan doing?", opts: ["Playing with a kitten", "Flying a kite", "Riding a bike"], ansIdx: 0 },
+                passage: "Nam and Lan are in the backyard. Nam is flying a blue kite. Lan is riding her new bike.",
+                passageTF: { stmt: "Nam is riding a bike.", ans: "False" },
+                passageQ: { q: "What colour is Nam's kite?", opts: ["Blue", "Red", "Yellow"], ansIdx: 0 }
+            },
+            {
+                unit: 3, title: "At the seaside", colour: "#D4F1E8",
+                phonics: {
+                    letter: "S", sound: "/s/", position: "beginning",
+                    words: ["sail", "sand", "sea"],
+                    blend: { parts: ["s", "a", "n", "d"], phonemes: ["/s/", "/ɪ/", "/n/"], word: "sand" }
+                },
+                vocab: [
+                    { word: "sail", vi: "cánh buồm", art: "sail", pattern: "Let's look at the sail.", patternVi: "Hãy nhìn cánh buồm nào.", expr: "Look at the sea!" },
+                    { word: "sand", vi: "cát biển", art: "sand", pattern: "Let's look at the sand.", patternVi: "Hãy nhìn bãi cát nào.", expr: "It's sunny today!" },
+                    { word: "sea", vi: "biển cả", art: "sea", pattern: "Let's look at the sea.", patternVi: "Hãy nhìn ra biển nào.", expr: "Let's go to the seaside!" }
+                ],
+                dialogue: [
+                    { role: "girl", line: "Let's look at the sea!" },
+                    { role: "boy", line: "Oh, I can see a white sail on the sea." }
+                ],
+                dialogueQ: { q: "What colour is the sail?", opts: ["White", "Pink", "Black"], ansIdx: 0 },
+                passage: "We are at the seaside. The sea is blue. Children are playing on the warm sand.",
+                passageTF: { stmt: "Children are playing on the sand.", ans: "True" },
+                passageQ: { q: "Where are they?", opts: ["At the seaside", "At the zoo", "In the kitchen"], ansIdx: 0 }
+            },
+            {
+                unit: 4, title: "In the countryside", colour: "#E5D9F2",
+                phonics: {
+                    letter: "R", sound: "/r/", position: "beginning",
+                    words: ["rainbow", "river", "road"],
+                    blend: { parts: ["r", "oa", "d"], phonemes: ["/r/", "/ə/", "/t/"], word: "road" }
+                },
+                vocab: [
+                    { word: "rainbow", vi: "cầu vồng", art: "rainbow", pattern: "I can see a rainbow.", patternVi: "Tớ có thể thấy cầu vồng.", expr: "How beautiful!" },
+                    { word: "river", vi: "dòng sông", art: "river", pattern: "I can see a river.", patternVi: "Tớ có thể thấy dòng sông.", expr: "Look over there!" },
+                    { word: "road", vi: "con đường", art: "road", pattern: "I can see a road.", patternVi: "Tớ có thể thấy con đường.", expr: "I love the countryside!" }
+                ],
+                dialogue: [
+                    { role: "boy", line: "What can you see in the sky?" },
+                    { role: "girl", line: "I can see a colourful rainbow!" }
+                ],
+                dialogueQ: { q: "What can she see in the sky?", opts: ["A rainbow", "A river", "A road"], ansIdx: 0 },
+                passage: "Grandma lives in the countryside. There is a long road near a clean river. After the rain, I can see a rainbow.",
+                passageTF: { stmt: "The road is near a river.", ans: "True" },
+                passageQ: { q: "When can I see a rainbow?", opts: ["After the rain", "At night", "In the shop"], ansIdx: 0 }
+            },
+            {
+                unit: 5, title: "At the fish and chip shop", colour: "#FFD6E0",
+                phonics: {
+                    letter: "I", sound: "/ɪ/", position: "middle",
+                    words: ["chicken", "chips", "fish", "milk"],
+                    blend: { parts: ["f", "i", "sh"], phonemes: ["/v/", "/ɪ/", "/ʃ/"], word: "fish" }
+                },
+                vocab: [
+                    { word: "chicken", vi: "thịt gà", art: "chicken", pattern: "I like chicken.", patternVi: "Tớ thích thịt gà.", expr: "What's your favourite food?" },
+                    { word: "chips", vi: "khoai tây chiên", art: "chips", pattern: "I like chips.", patternVi: "Tớ thích khoai tây chiên.", expr: "Fish and chips, please!" },
+                    { word: "fish", vi: "cá", art: "fish", pattern: "I like fish.", patternVi: "Tớ thích cá.", expr: "Here you are!" },
+                    { word: "milk", vi: "sữa", art: "milk", pattern: "I like milk.", patternVi: "Tớ thích sữa.", expr: "Milk is good!" }
+                ],
+                dialogue: [
+                    { role: "girl", line: "Do you like fish and chips?" },
+                    { role: "boy", line: "Yes, I do! And I like milk too." }
+                ],
+                dialogueQ: { q: "What drink does he like?", opts: ["Milk", "Juice", "Water"], ansIdx: 0 },
+                passage: "Ben and Mum are at the fish and chip shop. Ben likes chicken and chips. Mum likes fish and milk.",
+                passageTF: { stmt: "Ben likes fish and milk.", ans: "False" },
+                passageQ: { q: "Who likes chicken and chips?", opts: ["Ben", "Mum", "Dad"], ansIdx: 0 }
+            },
+            {
+                unit: 6, title: "On the farm", colour: "#D6ECFA",
+                phonics: {
+                    letter: "X", sound: "/ks/", position: "ending",
+                    words: ["box", "fox", "ox"],
+                    blend: { parts: ["f", "o", "x"], phonemes: ["/v/", "/ə/", "/ks/"], word: "fox" }
+                },
+                vocab: [
+                    { word: "box", vi: "cái hộp", art: "box", pattern: "Is there a box? Yes, there is.", patternVi: "Có cái hộp nào không? Có.", expr: "Look on the farm!" },
+                    { word: "fox", vi: "con cáo", art: "fox", pattern: "Is there a fox? Yes, there is.", patternVi: "Có con cáo nào không? Có.", expr: "Be careful!" },
+                    { word: "ox", vi: "con bò đực", art: "ox", pattern: "Is there an ox? No, there isn't.", patternVi: "Có con bò đực nào không? Không.", expr: "That's a big ox!" }
+                ],
+                dialogue: [
+                    { role: "boy", line: "Is there a fox on the farm?" },
+                    { role: "girl", line: "No, there isn't. There is an ox." }
+                ],
+                dialogueQ: { q: "Is there a fox on the farm?", opts: ["No, there isn't.", "Yes, there is.", "Yes, I do."], ansIdx: 0 },
+                passage: "On Uncle Tom's farm, there is a big brown ox. There is a wooden box near the gate. There isn't a fox.",
+                passageTF: { stmt: "There is a fox near the gate.", ans: "False" },
+                passageQ: { q: "What colour is the ox?", opts: ["Brown", "White", "Blue"], ansIdx: 0 }
+            },
+            {
+                unit: 7, title: "In the kitchen", colour: "#D4F1E8",
+                phonics: {
+                    letter: "J", sound: "/dʒ/", position: "beginning",
+                    words: ["jam", "juice", "jelly"],
+                    blend: { parts: ["j", "a", "m"], phonemes: ["/dʒ/", "/ɪ/", "/n/"], word: "jam" }
+                },
+                vocab: [
+                    { word: "jam", vi: "mứt trái cây", art: "jam", pattern: "Pass me the jam, please.", patternVi: "Làm ơn đưa giúp tớ lọ mứt.", expr: "Here you are." },
+                    { word: "juice", vi: "nước ép", art: "juice", pattern: "Pass me the juice, please.", patternVi: "Làm ơn đưa giúp tớ ly nước ép.", expr: "Thank you very much." },
+                    { word: "jelly", vi: "thạch rau câu", art: "jelly", pattern: "Pass me the jelly, please.", patternVi: "Làm ơn đưa giúp tớ đĩa thạch.", expr: "You're welcome!" }
+                ],
+                dialogue: [
+                    { role: "girl", line: "Pass me the juice, please." },
+                    { role: "boy", line: "Here you are." }
+                ],
+                dialogueQ: { q: "What does she ask for?", opts: ["The juice", "The jam", "The jelly"], ansIdx: 0 },
+                passage: "Mum and Linh are in the kitchen. There is strawberry jam, orange juice and pink jelly on the table.",
+                passageTF: { stmt: "The jelly is pink.", ans: "True" },
+                passageQ: { q: "What kind of jam is on the table?", opts: ["Strawberry jam", "Apple jam", "Grape jam"], ansIdx: 0 }
+            },
+            {
+                unit: 8, title: "In the village", colour: "#E5D9F2",
+                phonics: {
+                    letter: "V", sound: "/v/", position: "beginning",
+                    words: ["van", "village", "volleyball"],
+                    blend: { parts: ["v", "a", "n"], phonemes: ["/v/", "/ɪ/", "/n/"], word: "van" }
+                },
+                vocab: [
+                    { word: "van", vi: "xe tải nhỏ", art: "van", pattern: "Can you draw a van? Yes, I can.", patternVi: "Bạn vẽ xe tải nhỏ được không? Được.", expr: "Well done!" },
+                    { word: "village", vi: "ngôi làng", art: "village", pattern: "Can you draw a village? No, I can't.", patternVi: "Bạn vẽ ngôi làng được không? Không.", expr: "Let's draw together!" },
+                    { word: "volleyball", vi: "bóng chuyền", art: "volleyball", pattern: "I can play volleyball.", patternVi: "Tớ biết chơi bóng chuyền.", expr: "Great shot!" }
+                ],
+                dialogue: [
+                    { role: "boy", line: "Can you draw a van?" },
+                    { role: "girl", line: "Yes, I can. Look at my blue van!" }
+                ],
+                dialogueQ: { q: "Can she draw a van?", opts: ["Yes, she can.", "No, she can't.", "Yes, she does."], ansIdx: 0 },
+                passage: "This is my quiet village. A green van is on the road. Boys and girls are playing volleyball.",
+                passageTF: { stmt: "The van is green.", ans: "True" },
+                passageQ: { q: "What sport are they playing?", opts: ["Volleyball", "Football", "Tennis"], ansIdx: 0 }
+            },
+            {
+                unit: 9, title: "In the grocery store", colour: "#FFD6E0",
+                phonics: {
+                    letter: "Y", sound: "/j/", position: "beginning",
+                    words: ["yams", "yo-yos", "yogurt"],
+                    blend: { parts: ["y", "a", "m", "s"], phonemes: ["/j/", "/ɪ/", "/s/"], word: "yams" }
+                },
+                vocab: [
+                    { word: "yams", vi: "khoai mỡ", art: "yams", pattern: "What do you want? I want some yams.", patternVi: "Bạn muốn gì? Tớ muốn ít khoai.", expr: "Can I help you?" },
+                    { word: "yo-yos", vi: "con quay yo-yo", art: "yoyos", pattern: "I want two yo-yos.", patternVi: "Tớ muốn hai chiếc yo-yo.", expr: "Here are your yo-yos!" },
+                    { word: "yogurt", vi: "sữa chua", art: "yogurt", pattern: "I want some yogurt.", patternVi: "Tớ muốn một ít sữa chua.", expr: "Yogurt is healthy!" }
+                ],
+                dialogue: [
+                    { role: "girl", line: "What do you want?" },
+                    { role: "boy", line: "I want some yogurt and a yellow yo-yo." }
+                ],
+                dialogueQ: { q: "What colour is the yo-yo?", opts: ["Yellow", "Red", "Green"], ansIdx: 0 },
+                passage: "Mum is in the grocery store. She buys yams and yogurt. Tom wants two yo-yos.",
+                passageTF: { stmt: "Tom wants three yo-yos.", ans: "False" },
+                passageQ: { q: "What does Mum buy?", opts: ["Yams and yogurt", "Fish and chips", "Cake and grapes"], ansIdx: 0 }
+            },
+            {
+                unit: 10, title: "At the zoo", colour: "#D6ECFA",
+                phonics: {
+                    letter: "Z", sound: "/z/", position: "beginning",
+                    words: ["zebu", "zebra", "zoo"],
+                    blend: { parts: ["z", "oo"], phonemes: ["/z/", "/ə/"], word: "zoo" }
+                },
+                vocab: [
+                    { word: "zebu", vi: "bò u", art: "zebu", pattern: "Do you like the zebu? No, I don't.", patternVi: "Bạn thích bò u không? Không.", expr: "Look at the animals!" },
+                    { word: "zebra", vi: "ngựa vằn", art: "zebra", pattern: "Do you like the zebra? Yes, I do.", patternVi: "Bạn thích ngựa vằn không? Có.", expr: "I love zebras!" },
+                    { word: "zoo", vi: "sở thú", art: "zoo", pattern: "We are at the zoo.", patternVi: "Chúng tớ đang ở sở thú.", expr: "Let's go to the zoo!" }
+                ],
+                dialogue: [
+                    { role: "boy", line: "Do you like the zebra?" },
+                    { role: "girl", line: "Yes, I do! It has black and white stripes." }
+                ],
+                dialogueQ: { q: "Does she like the zebra?", opts: ["Yes, she does.", "No, she doesn't.", "Yes, she can."], ansIdx: 0 },
+                passage: "Class 2A is at the zoo. There is a tall zebra and a brown zebu. Nam likes the zebra.",
+                passageTF: { stmt: "Nam likes the zebra.", ans: "True" },
+                passageQ: { q: "Where is Class 2A?", opts: ["At the zoo", "At the seaside", "At the café"], ansIdx: 0 }
+            },
+            {
+                unit: 11, title: "In the playground", colour: "#D4F1E8",
+                phonics: {
+                    letter: "I", sound: "/aɪ/", position: "middle",
+                    words: ["driving", "riding", "sliding"],
+                    blend: { parts: ["r", "i", "d", "e"], phonemes: ["/r/", "/aɪ/", "/t/"], word: "ride" }
+                },
+                vocab: [
+                    { word: "driving", vi: "đang lái xe", art: "driving", pattern: "They're driving toy cars.", patternVi: "Các bạn ấy đang lái xe đồ chơi.", expr: "Be careful!" },
+                    { word: "riding", vi: "đang đạp xe", art: "riding", pattern: "They're riding bikes.", patternVi: "Các bạn ấy đang đạp xe.", expr: "Have fun!" },
+                    { word: "sliding", vi: "đang trượt cầu trượt", art: "sliding", pattern: "They're sliding.", patternVi: "Các bạn ấy đang chơi cầu trượt.", expr: "Whee! So fun!" }
+                ],
+                dialogue: [
+                    { role: "girl", line: "What are they doing in the playground?" },
+                    { role: "boy", line: "They're sliding and riding bikes." }
+                ],
+                dialogueQ: { q: "Where are the children?", opts: ["In the playground", "In the kitchen", "In the tent"], ansIdx: 0 },
+                passage: "It is break time in the playground. Two girls are sliding. Three boys are driving toy cars.",
+                passageTF: { stmt: "Three boys are driving toy cars.", ans: "True" },
+                passageQ: { q: "What are the two girls doing?", opts: ["Sliding", "Riding", "Eating"], ansIdx: 0 }
+            },
+            {
+                unit: 12, title: "At the café", colour: "#E5D9F2",
+                phonics: {
+                    letter: "A", sound: "/eɪ/", position: "middle",
+                    words: ["cake", "grapes", "table"],
+                    blend: { parts: ["c", "a", "k", "e"], phonemes: ["/k/", "/eɪ/", "/k/"], word: "cake" }
+                },
+                vocab: [
+                    { word: "cake", vi: "bánh ngọt", art: "cake", pattern: "The cake is on the table.", patternVi: "Chiếc bánh ngọt ở trên bàn.", expr: "Sit down, please!" },
+                    { word: "grapes", vi: "những quả nho", art: "grapes", pattern: "The grapes are on the table.", patternVi: "Những quả nho ở trên bàn.", expr: "Sweet grapes!" },
+                    { word: "table", vi: "cái bàn", art: "table", pattern: "Look at the round table.", patternVi: "Hãy nhìn chiếc bàn tròn.", expr: "Enjoy your meal!" }
+                ],
+                dialogue: [
+                    { role: "boy", line: "Where are the grapes?" },
+                    { role: "girl", line: "They're on the table, next to the cake." }
+                ],
+                dialogueQ: { q: "Where are the grapes?", opts: ["On the table", "Under the table", "In the van"], ansIdx: 0 },
+                passage: "Mai and Mum are at the café. On the table, there is a strawberry cake and purple grapes.",
+                passageTF: { stmt: "The cake is on the table.", ans: "True" },
+                passageQ: { q: "What colour are the grapes?", opts: ["Purple", "Yellow", "Orange"], ansIdx: 0 }
+            },
+            {
+                unit: 13, title: "In the maths class", colour: "#FFD6E0",
+                phonics: {
+                    letter: "N", sound: "/n/", position: "ending",
+                    words: ["eleven", "thirteen", "fourteen", "fifteen"],
+                    blend: { parts: ["t", "e", "n"], phonemes: ["/t/", "/ə/", "/n/"], word: "ten" }
+                },
+                vocab: [
+                    { word: "eleven", vi: "số 11", art: "num_11", pattern: "What number is it? It's eleven.", patternVi: "Đây là số mấy? Số 11.", expr: "Let's count!" },
+                    { word: "thirteen", vi: "số 13", art: "num_13", pattern: "What number is it? It's thirteen.", patternVi: "Đây là số mấy? Số 13.", expr: "Good job!" },
+                    { word: "fourteen", vi: "số 14", art: "num_14", pattern: "There are fourteen stars.", patternVi: "Có 14 ngôi sao.", expr: "Count again!" },
+                    { word: "fifteen", vi: "số 15", art: "num_15", pattern: "There are fifteen books.", patternVi: "Có 15 quyển sách.", expr: "Maths is fun!" }
+                ],
+                dialogue: [
+                    { role: "girl", line: "What number is it?" },
+                    { role: "boy", line: "It's fifteen!" }
+                ],
+                dialogueQ: { q: "What number is it?", opts: ["15", "11", "13"], ansIdx: 0 },
+                passage: "In the maths class, Phong counts fourteen pencils and fifteen rubbers on his desk.",
+                passageTF: { stmt: "Phong counts fifteen pencils.", ans: "False" },
+                passageQ: { q: "How many rubbers are on his desk?", opts: ["Fifteen", "Eleven", "Thirteen"], ansIdx: 0 }
+            },
+            {
+                unit: 14, title: "At home", colour: "#D6ECFA",
+                phonics: {
+                    letter: "ER", sound: "/ə/", position: "ending",
+                    words: ["brother", "grandmother", "sister"],
+                    blend: { parts: ["s", "i", "s", "t", "er"], phonemes: ["/s/", "/ɪ/", "/s/", "/t/", "/ə/"], word: "sister" }
+                },
+                vocab: [
+                    { word: "brother", vi: "anh/em trai", art: "brother", pattern: "How old is your brother? He's sixteen.", patternVi: "Anh trai bạn bao nhiêu tuổi? 16 tuổi.", expr: "This is my family!" },
+                    { word: "grandmother", vi: "bà", art: "grandmother", pattern: "My grandmother is at home.", patternVi: "Bà của tớ đang ở nhà.", expr: "I love my grandmother!" },
+                    { word: "sister", vi: "chị/em gái", art: "sister", pattern: "How old is your sister? She's nineteen.", patternVi: "Chị gái bạn bao nhiêu tuổi? 19 tuổi.", expr: "Welcome home!" }
+                ],
+                dialogue: [
+                    { role: "boy", line: "How old is your brother?" },
+                    { role: "girl", line: "He's sixteen." }
+                ],
+                dialogueQ: { q: "How old is her brother?", opts: ["16", "19", "14"], ansIdx: 0 },
+                passage: "At home, my grandmother is reading a book. My brother is sixteen and my sister is nineteen.",
+                passageTF: { stmt: "My sister is nineteen.", ans: "True" },
+                passageQ: { q: "Who is reading a book?", opts: ["Grandmother", "Brother", "Sister"], ansIdx: 0 }
+            },
+            {
+                unit: 15, title: "In the clothes shop", colour: "#D4F1E8",
+                phonics: {
+                    letter: "SH", sound: "/ʃ/", position: "beginning",
+                    words: ["shirts", "shoes", "shorts"],
+                    blend: { parts: ["sh", "oe", "s"], phonemes: ["/ʃ/", "/ə/", "/z/"], word: "shoes" }
+                },
+                vocab: [
+                    { word: "shirts", vi: "những chiếc áo sơ mi", art: "shirts", pattern: "Where are the shirts? They're over there.", patternVi: "Áo sơ mi ở đâu? Chúng ở đằng kia.", expr: "Over there!" },
+                    { word: "shoes", vi: "đôi giày", art: "shoes", pattern: "Where are the shoes? They're over there.", patternVi: "Những đôi giày ở đâu? Chúng ở đằng kia.", expr: "Nice shoes!" },
+                    { word: "shorts", vi: "quần soóc", art: "shorts", pattern: "Where are the shorts? They're over there.", patternVi: "Quần soóc ở đâu? Chúng ở đằng kia.", expr: "Try them on!" }
+                ],
+                dialogue: [
+                    { role: "girl", line: "Excuse me, where are the shoes?" },
+                    { role: "boy", line: "They're over there, next to the shirts." }
+                ],
+                dialogueQ: { q: "Where are the shoes?", opts: ["Next to the shirts", "On the table", "In the tent"], ansIdx: 0 },
+                passage: "Dad and Minh are in the clothes shop. The blue shorts and white shirts are over there.",
+                passageTF: { stmt: "The shorts are blue.", ans: "True" },
+                passageQ: { q: "What colour are the shirts?", opts: ["White", "Blue", "Pink"], ansIdx: 0 }
+            },
+            {
+                unit: 16, title: "At the campsite", colour: "#E5D9F2",
+                phonics: {
+                    letter: "T", sound: "/t/", position: "beginning",
+                    words: ["teapot", "tent", "blanket"],
+                    blend: { parts: ["t", "e", "n", "t"], phonemes: ["/t/", "/ə/", "/n/", "/t/"], word: "tent" }
+                },
+                vocab: [
+                    { word: "teapot", vi: "ấm pha trà", art: "teapot", pattern: "Is the teapot near the tent? Yes, it is.", patternVi: "Ấm trà gần lều phải không? Đúng vậy.", expr: "Let's make tea!" },
+                    { word: "tent", vi: "cái lều trại", art: "tent", pattern: "The tent is near the river.", patternVi: "Chiếc lều ở gần dòng sông.", expr: "What a big tent!" },
+                    { word: "blanket", vi: "cái chăn", art: "blanket", pattern: "Is the blanket in the tent? Yes, it is.", patternVi: "Cái chăn trong lều phải không? Đúng vậy.", expr: "Good night!" }
+                ],
+                dialogue: [
+                    { role: "boy", line: "Is the blanket in the tent?" },
+                    { role: "girl", line: "Yes, it is. And the teapot is near the tent." }
+                ],
+                dialogueQ: { q: "Where is the blanket?", opts: ["In the tent", "Near the sea", "At home"], ansIdx: 0 },
+                passage: "Our family is at the campsite. We have a yellow tent. A warm blanket is in the tent, and a teapot is near the tent.",
+                passageTF: { stmt: "The teapot is in the tent.", ans: "False" },
+                passageQ: { q: "What colour is the tent?", opts: ["Yellow", "Green", "Red"], ansIdx: 0 }
+            }
+        ];
+
+        const REVIEW_GROUPS = [
+            { id: 1, title: "Review 1", subtitle: "Units 1–4", units: [1, 2, 3, 4], colour: "#FFD6E0" },
+            { id: 2, title: "Review 2", subtitle: "Units 5–8", units: [5, 6, 7, 8], colour: "#D6ECFA" },
+            { id: 3, title: "Review 3", subtitle: "Units 9–12", units: [9, 10, 11, 12], colour: "#E5D9F2" },
+            { id: 4, title: "Review 4", subtitle: "Units 13–16", units: [13, 14, 15, 16], colour: "#D4F1E8" }
+        ];
+
+        /* =========================================================================
+           6. STUDENT PROGRESS & STORAGE
+           ========================================================================= */
+        const STORE_KEY = "ms_noemie_classroom_en2_v2";
+        let state = {
+            nickname: "",
+            avatar: "pink_bunny",
+            stars: 0,
+            streak: 1,
+            lastDay: new Date().toDateString(),
+            masteredWords: [],
+            practisedCards: 0,
+            completedUnits: [],
+            skills: {
+                listening: { correct: 0, total: 0 },
+                speaking: { correct: 0, total: 0 },
+                reading: { correct: 0, total: 0 },
+                writing: { correct: 0, total: 0 }
+            },
+            reviewScores: {},
+            midtermScore: null,
+            finalScore: null
+        };
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORE_KEY);
+                if (raw) state = { ...state, ...JSON.parse(raw) };
+            } catch (e) {}
+            const today = new Date().toDateString();
+            if (state.lastDay !== today) {
+                const yest = new Date(Date.now() - 86400000).toDateString();
+                state.streak = state.lastDay === yest ? state.streak + 1 : 1;
+                state.lastDay = today;
+                saveState();
+            }
+        }
+
+        function saveState() {
+            try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
+            renderDashboardStats();
+        }
+
+        function recordSkillPoints(skill, earned, maxPts) {
+            if (!state.skills[skill]) return;
+            state.skills[skill].correct += earned;
+            state.skills[skill].total += maxPts;
+            if (earned > 0) state.stars += Math.ceil(earned);
+            saveState();
+        }
+
+        function renderAvatarPicker(containerId, selectedId, onPickName) {
+            const box = document.getElementById(containerId);
+            if (!box) return;
+            box.innerHTML = MASCOTS.map(m => `
+                <button type="button" onclick="${onPickName}('${m.id}')" style="background-color:${m.bg}" class="p-2 rounded-2xl border-3 ${selectedId === m.id ? 'border-[#5C3D2E] ring-4 ring-[#FF9E44]' : 'border-[#5C3D2E]/40'} transition">
+                    <div class="w-12 h-12 mx-auto">${m.svg}</div>
+                </button>
+            `).join('');
+        }
+
+        function pickGateAvatar(id) {
+            state.avatar = id;
+            renderAvatarPicker('gate-avatar-picker', state.avatar, 'pickGateAvatar');
+        }
+
+        function pickModalAvatar(id) {
+            state.avatar = id;
+            renderAvatarPicker('modal-avatar-picker', state.avatar, 'pickModalAvatar');
+        }
+
+        function enterClassroom() {
+            const val = document.getElementById('nickname-input').value.trim();
+            if (!val) {
+                showToast('Enter your nickname!');
+                return;
+            }
+            state.nickname = val;
+            saveState();
+            showClassroomUI();
+        }
+
+        function showClassroomUI() {
+            document.getElementById('nickname-gate').classList.add('hidden');
+            document.getElementById('classroom-shell').classList.remove('hidden');
+            const bar = document.getElementById('header-profile-bar');
+            bar.classList.remove('hidden');
+            bar.classList.add('flex');
+            renderDashboardStats();
+        }
+
+        function openNicknameModal() {
+            document.getElementById('modal-nickname-input').value = state.nickname;
+            renderAvatarPicker('modal-avatar-picker', state.avatar, 'pickModalAvatar');
+            const m = document.getElementById('nickname-modal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+
+        function closeNicknameModal() {
+            const m = document.getElementById('nickname-modal');
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        function saveEditedNickname() {
+            const val = document.getElementById('modal-nickname-input').value.trim();
+            if (val) state.nickname = val;
+            saveState();
+            closeNicknameModal();
+        }
+
+        function renderDashboardStats() {
+            if (!state.nickname) return;
+            const avSvg = getMascotSVG(state.avatar);
+            document.getElementById('hdr-bunny-mini').innerHTML = avSvg;
+            document.getElementById('dash-bunny-avatar').innerHTML = avSvg;
+            document.getElementById('hdr-nickname').textContent = state.nickname;
+            document.getElementById('dash-nickname').textContent = state.nickname;
+            document.getElementById('hdr-stars').textContent = state.stars;
+            document.getElementById('hdr-streak').textContent = state.streak;
+
+            document.getElementById('stat-units').textContent = `${state.completedUnits.length}/16`;
+            document.getElementById('stat-mastered').textContent = state.masteredWords.length;
+            document.getElementById('stat-practised').textContent = state.practisedCards;
+
+            const badges = [];
+            if (state.practisedCards >= 5) badges.push("🃏 Card Explorer");
+            if (state.completedUnits.length >= 1) badges.push("🐰 Unit Star");
+            if (state.stars >= 25) badges.push("⭐ Super Learner");
+            if (state.midtermScore !== null) badges.push("🏅 Midterm Hero");
+            if (state.finalScore !== null) badges.push("👑 English 2 Star");
+            document.getElementById('dash-badges').innerHTML = badges.length
+                ? badges.map(b => `<span class="bg-[#FFF7D6] border border-[#5C3D2E] px-2.5 py-0.5 rounded-full text-[11px] font-black">${b}</span>`).join('')
+                : `<span class="text-xs font-bold text-[#855E4B]">⭐ ${state.stars} Stars</span>`;
+
+            const skillNames = ['listening', 'speaking', 'reading', 'writing'];
+            let weakList = [];
+            skillNames.forEach(sk => {
+                const s = state.skills[sk];
+                const pct = s.total > 0 ? Math.min(100, Math.round((s.correct / s.total) * 100)) : 0;
+                document.getElementById(`sk-pct-${sk}`).textContent = `${pct}%`;
+                document.getElementById(`sk-bar-${sk}`).style.width = `${pct}%`;
+                if (s.total === 0 || pct < 75) weakList.push(sk.charAt(0).toUpperCase() + sk.slice(1));
+            });
+            document.getElementById('stat-weak-skills').textContent = weakList.length ? weakList.join(', ') : 'All Strong!';
+
+            const revVals = Object.values(state.reviewScores);
+            document.getElementById('stat-review-avg').textContent = revVals.length
+                ? `${Math.round(revVals.reduce((a, b) => a + b, 0) / revVals.length)}%`
+                : '—';
+
+            const midTxt = state.midtermScore !== null ? `${state.midtermScore}/10` : '—';
+            const finTxt = state.finalScore !== null ? `${state.finalScore}/10` : '—';
+            document.getElementById('stat-exam-scores').textContent = `${midTxt} / ${finTxt}`;
+        }
+
+        /* =========================================================================
+           7. NAVIGATION & UTILITIES
+           ========================================================================= */
+        let activeTimer = null;
+        function clearActiveTimer() {
+            if (activeTimer) { clearInterval(activeTimer); activeTimer = null; }
+        }
+
+        function goHome() {
+            stopAudio();
+            clearActiveTimer();
+            stopMicRecording(true);
+            document.getElementById('subview-topbar').classList.add('hidden');
+            document.getElementById('view-workspace').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.remove('hidden');
+            renderDashboardStats();
+        }
+
+        function openModule(mod) {
+            stopAudio();
+            clearActiveTimer();
+            stopMicRecording(true);
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-workspace').classList.remove('hidden');
+            document.getElementById('subview-topbar').classList.remove('hidden');
+
+            const labels = {
+                flashcards: '🃏 Flashcards',
+                practice: '✏️ Unit Practice (Units 1–16)',
+                review: '🌸 Unit Review',
+                midterm: '🏅 Midterm Test (Units 1–8)',
+                final: '👑 Final Test (Units 1–16)'
+            };
+            document.getElementById('subview-breadcrumb').textContent = labels[mod] || '';
+
+            if (mod === 'flashcards') renderFlashcardsHub();
+            if (mod === 'practice') renderUnitSelector();
+            if (mod === 'review') renderFourReviewsHub();
+            if (mod === 'midterm') startAssessmentTest('midterm');
+            if (mod === 'final') startAssessmentTest('final');
+        }
+
+        function showToast(msg) {
+            const box = document.getElementById('toast-container');
+            const el = document.createElement('div');
+            el.className = 'bg-[#FFFDF7] border-3 border-[#5C3D2E] shadow-md px-4 py-2 rounded-2xl font-black text-sm';
+            el.textContent = msg;
+            box.appendChild(el);
+            setTimeout(() => el.remove(), 2200);
+        }
+
+        function escAttr(s) {
+            return String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function normalizeAnswer(str) {
+            return String(str || '')
+                .toLowerCase()
+                .replace(/[.,!?;:'"’]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        /* =========================================================================
+           8. FLASHCARDS MODULE (3D FLIP, PHONEME + WORD AUDIO, SHUFFLE, KNOW IT)
+           ========================================================================= */
+        let fcState = { unitNum: 1, category: 'vocabulary', deck: [], index: 0 };
+
+        function renderFlashcardsHub() {
+            const ws = document.getElementById('view-workspace');
+            ws.innerHTML = `
+                <div class="sticker-card p-5 bg-[#FFFDF7]">
+                    <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b-2 border-dashed border-[#5C3D2E]/25">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <select id="fc-unit-select" onchange="updateFlashcardDeck()" class="bg-[#FFF7D6] border-3 border-[#5C3D2E] rounded-2xl px-3.5 py-2 font-black text-sm">
+                                <option value="all">All Units (1 – 16)</option>
+                                ${CURRICULUM.map(u => `<option value="${u.unit}" ${fcState.unitNum == u.unit ? 'selected' : ''}>Unit ${u.unit}: ${u.title}</option>`).join('')}
+                            </select>
+
+                            <div class="flex flex-wrap gap-1.5">
+                                ${[
+                                    { id: 'vocabulary', label: 'Vocabulary' },
+                                    { id: 'phonics', label: 'Phonics' },
+                                    { id: 'patterns', label: 'Sentence Patterns' },
+                                    { id: 'expressions', label: 'Everyday Expressions' }
+                                ].map(c => `
+                                    <button type="button" onclick="setFcCategory('${c.id}')" class="btn-bunny ${fcState.category === c.id ? 'bg-[#FFD6E0]' : 'bg-white'} px-3 py-1.5 rounded-xl font-black text-xs sm:text-sm">
+                                        ${c.label}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="shuffleFlashcards()" class="btn-bunny bg-[#E5D9F2] px-4 py-2 rounded-2xl font-black text-xs sm:text-sm flex items-center gap-1.5">
+                            <i class="fa-solid fa-shuffle"></i> Shuffle
+                        </button>
+                    </div>
+                    <div id="fc-stage"></div>
+                </div>
+            `;
+            updateFlashcardDeck();
+        }
+
+        function setFcCategory(cat) {
+            fcState.category = cat;
+            renderFlashcardsHub();
+        }
+
+        function updateFlashcardDeck() {
+            const sel = document.getElementById('fc-unit-select');
+            if (sel) fcState.unitNum = sel.value;
+
+            const units = fcState.unitNum === 'all'
+                ? CURRICULUM
+                : CURRICULUM.filter(u => u.unit === Number(fcState.unitNum));
+
+            const deck = [];
+            units.forEach(u => {
+                if (fcState.category === 'vocabulary') {
+                    u.vocab.forEach(v => deck.push({
+                        key: v.word, unit: u.unit, art: v.art,
+                        front: v.word, phoneme: u.phonics.sound,
+                        phonicsLabel: `${u.phonics.letter} ${u.phonics.sound}`,
+                        backMain: v.vi, backSub: v.pattern
+                    }));
+                } else if (fcState.category === 'phonics') {
+                    deck.push({
+                        key: `ph_${u.unit}`, unit: u.unit, art: u.vocab[0].art,
+                        front: `${u.phonics.letter}   ${u.phonics.sound}`,
+                        phoneme: u.phonics.sound,
+                        isPhonicsCard: true,
+                        speakWord: u.phonics.words[0],
+                        phonicsLabel: u.phonics.words.join(' • '),
+                        backMain: u.phonics.words.join(', '),
+                        backSub: `Unit ${u.unit}: ${u.title}`
+                    });
+                } else if (fcState.category === 'patterns') {
+                    u.vocab.forEach(v => deck.push({
+                        key: `pat_${v.word}`, unit: u.unit, art: v.art,
+                        front: v.pattern, phoneme: u.phonics.sound,
+                        phonicsLabel: v.word,
+                        backMain: v.patternVi, backSub: `Unit ${u.unit}`
+                    }));
+                } else {
+                    u.vocab.forEach(v => deck.push({
+                        key: `exp_${v.expr}_${u.unit}`, unit: u.unit, art: v.art,
+                        front: v.expr, phoneme: u.phonics.sound,
+                        phonicsLabel: `Unit ${u.unit}`,
+                        backMain: u.title, backSub: v.pattern
+                    }));
+                }
+            });
+
+            fcState.deck = deck;
+            fcState.index = 0;
+            renderCurrentFlashcard();
+        }
+
+        function shuffleFlashcards() {
+            fcState.deck = shuffle(fcState.deck);
+            fcState.index = 0;
+            renderCurrentFlashcard();
+            showToast('Shuffled!');
+        }
+
+        function renderCurrentFlashcard() {
+            const stage = document.getElementById('fc-stage');
+            if (!fcState.deck.length) return;
+            const card = fcState.deck[fcState.index];
+            const known = state.masteredWords.includes(card.key);
+
+            const audioControls = card.isPhonicsCard
+                ? `<div class="inline-flex gap-2 bg-[#D6ECFA]/70 border-2 border-[#5C3D2E] rounded-2xl px-3 py-2">
+                        <button type="button" onclick="playPhonemeSound('${card.phoneme}')" class="btn-bunny bg-[#FFD6E0] px-3 py-1 rounded-xl text-xs font-black">🔊 Sound ${card.phoneme}</button>
+                        <button type="button" onclick="speakUK('${escAttr(card.speakWord)}', {role:'girl'})" class="btn-bunny bg-white px-3 py-1 rounded-xl text-xs font-black">🇬🇧 ${card.speakWord}</button>
+                   </div>`
+                : renderAudioBar(card.front);
+
+            stage.innerHTML = `
+                <div class="max-w-lg mx-auto">
+                    <div class="flex justify-between items-center text-xs font-black mb-2">
+                        <span>Card ${fcState.index + 1} / ${fcState.deck.length}</span>
+                        <span>${known ? '⭐ Known' : '🌱 Learning'}</span>
+                    </div>
+
+                    <div id="active-fc" onclick="flipFlashcard()" class="fc-scene h-[340px] w-full cursor-pointer mb-4">
+                        <div class="fc-inner">
+                            <!-- Front -->
+                            <div class="fc-face sticker-card p-5 bg-[#FFF7D6]/65 flex flex-col items-center justify-between">
+                                <div class="w-full flex justify-between items-center">
+                                    <span class="bg-[#FFD6E0] border-2 border-[#5C3D2E] px-3 py-0.5 rounded-full text-xs font-black">Unit ${card.unit}</span>
+                                    <span class="text-xs font-extrabold text-[#855E4B]">Tap to flip</span>
+                                </div>
+                                <div class="text-center my-auto">
+                                    <div class="w-24 h-24 mx-auto mb-2">${renderIllustration(card.art, card.front)}</div>
+                                    <div class="text-2xl sm:text-3xl font-black text-[#5C3D2E]">${card.front}</div>
+                                    <div class="text-xs font-extrabold text-[#855E4B] mt-1">${card.phonicsLabel}</div>
+                                </div>
+                                <div onclick="event.stopPropagation()">${audioControls}</div>
+                            </div>
+
+                            <!-- Back -->
+                            <div class="fc-face fc-back sticker-card p-5 bg-[#E5D9F2]/55 flex flex-col items-center justify-between">
+                                <div class="w-full flex justify-between items-center">
+                                    <span class="bg-white border-2 border-[#5C3D2E] px-3 py-0.5 rounded-full text-xs font-black">Unit ${card.unit}</span>
+                                    <div class="w-10 h-10">${renderIllustration(card.art, card.front)}</div>
+                                </div>
+                                <div class="text-center my-auto">
+                                    <div class="text-2xl sm:text-3xl font-black text-[#5C3D2E] mb-2">${card.backMain}</div>
+                                    <div class="bg-white border-2 border-[#5C3D2E] rounded-2xl px-4 py-2 text-sm font-extrabold">
+                                        ${card.backSub}
+                                    </div>
+                                </div>
+                                <div onclick="event.stopPropagation()">
+                                    ${renderAudioBar(card.backSub, 'boy')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                        <button type="button" onclick="stepFlashcard(-1)" class="btn-bunny bg-white py-2.5 rounded-2xl font-black text-xs sm:text-sm">⬅️ Previous</button>
+                        <button type="button" onclick="markFlashcard(false)" class="btn-bunny bg-[#FFD6E0] py-2.5 rounded-2xl font-black text-xs sm:text-sm">🔄 Practice again</button>
+                        <button type="button" onclick="markFlashcard(true)" class="btn-bunny bg-[#D4F1E8] py-2.5 rounded-2xl font-black text-xs sm:text-sm">✅ Know it</button>
+                        <button type="button" onclick="stepFlashcard(1)" class="btn-bunny bg-[#FF9E44] py-2.5 rounded-2xl font-black text-xs sm:text-sm">Next ➡️</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function flipFlashcard() {
+            const el = document.getElementById('active-fc');
+            if (el) {
+                el.classList.toggle('flipped');
+                state.practisedCards += 1;
+                saveState();
+            }
+        }
+
+        function stepFlashcard(delta) {
+            const n = fcState.deck.length;
+            fcState.index = (fcState.index + delta + n) % n;
+            renderCurrentFlashcard();
+            const card = fcState.deck[fcState.index];
+            if (card.isPhonicsCard) playPhonemeSound(card.phoneme);
+            else speakUK(card.front);
+        }
+
+        function markFlashcard(known) {
+            const card = fcState.deck[fcState.index];
+            state.practisedCards += 1;
+            if (known) {
+                if (!state.masteredWords.includes(card.key)) state.masteredWords.push(card.key);
+                state.stars += 1;
+                showToast('Great job!');
+            } else {
+                state.masteredWords = state.masteredWords.filter(k => k !== card.key);
+                showToast('Keep going!');
+            }
+            saveState();
+            stepFlashcard(1);
+        }
+
+        /* =========================================================================
+           9. UNIT SELECTOR & EXACTLY 4 UNIT REVIEWS HUB
+           ========================================================================= */
+        function renderUnitSelector() {
+            const ws = document.getElementById('view-workspace');
+            ws.innerHTML = `
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    ${CURRICULUM.map(u => {
+                        const done = state.completedUnits.includes(u.unit);
+                        return `
+                            <button type="button" onclick="openUnitPractice(${u.unit})" style="background-color:${u.colour}" class="sticker-card p-4 text-left hover:-translate-y-1 transition flex flex-col justify-between">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="bg-white border-2 border-[#5C3D2E] px-2.5 py-0.5 rounded-full text-xs font-black">Unit ${u.unit}</span>
+                                    <span class="text-sm font-black">${done ? '⭐' : ''}</span>
+                                </div>
+                                <div class="flex items-center gap-3 my-1">
+                                    <div class="w-14 h-14 bg-white rounded-2xl border-2 border-[#5C3D2E] p-1.5 shrink-0">${renderIllustration(u.vocab[0].art, u.vocab[0].word)}</div>
+                                    <div>
+                                        <div class="font-black text-base leading-tight">${u.title}</div>
+                                        <div class="text-xs font-extrabold text-[#855E4B] mt-0.5">Phonics: ${u.phonics.letter} ${u.phonics.sound}</div>
+                                    </div>
+                                </div>
+                            </button>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        // EXACTLY FOUR UNIT REVIEWS (Review 1: 1-4, Review 2: 5-8, Review 3: 9-12, Review 4: 13-16)
+        function renderFourReviewsHub() {
+            const ws = document.getElementById('view-workspace');
+            ws.innerHTML = `
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-4xl mx-auto my-4">
+                    ${REVIEW_GROUPS.map(rg => {
+                        const score = state.reviewScores[rg.id];
+                        const unitsInGroup = CURRICULUM.filter(u => rg.units.includes(u.unit));
+                        return `
+                            <button type="button" onclick="startGroupReview(${rg.id})" style="background-color:${rg.colour}" class="sticker-card p-6 text-left hover:-translate-y-1 transition">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="bg-white border-2 border-[#5C3D2E] px-3.5 py-1 rounded-full text-sm font-black">${rg.subtitle}</span>
+                                    <span class="bg-[#FFFDF7] border-2 border-[#5C3D2E] px-3 py-1 rounded-full text-xs font-black">
+                                        ${score !== undefined ? `⭐ ${score}%` : 'Start'}
+                                    </span>
+                                </div>
+                                <h3 class="text-2xl font-black mb-3">${rg.title} | ${rg.subtitle}</h3>
+                                <div class="grid grid-cols-4 gap-2">
+                                    ${unitsInGroup.map(u => `
+                                        <div class="bg-white border-2 border-[#5C3D2E] rounded-2xl p-2 text-center">
+                                            <div class="w-10 h-10 mx-auto">${renderIllustration(u.vocab[0].art, u.vocab[0].word)}</div>
+                                            <div class="text-[11px] font-black mt-1">U${u.unit}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </button>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        /* =========================================================================
+           10. LARGE QUESTION BANK GENERATOR (ID-VALIDATED, DIVERSE EXERCISE TYPES)
+           ========================================================================= */
+        function makeChoiceQ(base) {
+            // Bind strict unique IDs to options BEFORE shuffling so randomization never breaks answer keys
+            const rawOpts = base.options.map((opt, idx) => ({
+                id: `opt_${idx}`,
+                label: opt.label,
+                art: opt.art || null,
+                isCorrect: idx === base.correctIndex
+            }));
+            const shuffled = shuffle(rawOpts);
+            const correctObj = shuffled.find(o => o.isCorrect);
+            return {
+                ...base,
+                type: base.type || 'choice',
+                options: shuffled,
+                correctId: correctObj.id,
+                correctLabel: correctObj.label
+            };
+        }
+
+        function buildUnitQuestionBank(unitObj) {
+            const bank = [];
+            const others = CURRICULUM.filter(u => u.unit !== unitObj.unit);
+            const otherVocab = others.flatMap(u => u.vocab);
+            const earlierVocab = CURRICULUM.filter(u => u.unit < unitObj.unit).flatMap(u => u.vocab);
+
+            // ---------------- LEVEL 1: BASIC ----------------
+            // 1. Listening: Listen and choose the correct picture (ID-validated)
+            unitObj.vocab.forEach((v, idx) => {
+                const dist = shuffle(otherVocab).slice(0, 2);
+                bank.push(makeChoiceQ({
+                    uid: `u${unitObj.unit}_b_lis_pic_${idx}`,
+                    skill: 'listening',
+                    level: 'basic',
+                    role: idx % 2 === 0 ? 'girl' : 'boy',
+                    audioText: v.word,
+                    prompt: 'Listen and choose the correct picture.',
+                    options: [
+                        { label: v.word, art: v.art },
+                        { label: dist[0].word, art: dist[0].art },
+                        { label: dist[1].word, art: dist[1].art }
+                    ],
+                    correctIndex: 0
+                }));
+            });
+
+            // 2. Phonics: Listen to pure phoneme sound & identify letter/word
+            const phDist = shuffle(others.map(u => u.phonics));
+            bank.push(makeChoiceQ({
+                uid: `u${unitObj.unit}_b_phonics_sound`,
+                skill: 'listening',
+                level: 'basic',
+                isPhonics: true,
+                phoneme: unitObj.phonics.sound,
+                art: unitObj.vocab[0].art,
+                prompt: `Listen to the sound and choose the matching letter (${unitObj.phonics.position} sound):`,
+                options: [
+                    { label: `${unitObj.phonics.letter} (${unitObj.phonics.sound})` },
+                    { label: `${phDist[0].letter} (${phDist[0].sound})` },
+                    { label: `${phDist[1].letter} (${phDist[1].sound})` }
+                ],
+                correctIndex: 0
+            }));
+
+            // 3. Phonics Blending Builder
+            bank.push({
+                uid: `u${unitObj.unit}_b_phonics_blend`,
+                type: 'phonics_blend',
+                skill: 'reading',
+                level: 'basic',
+                art: unitObj.vocab[0].art,
+                blend: unitObj.phonics.blend,
+                prompt: `Tap each sound to blend the word:`,
+                answerText: unitObj.phonics.blend.word
+            });
+
+            // 4. Reading: Picture-to-Word Matching (3 pairs, partial credit)
+            const matchItems = unitObj.vocab.slice(0, 3);
+            bank.push({
+                uid: `u${unitObj.unit}_b_read_match`,
+                type: 'matching',
+                skill: 'reading',
+                level: 'basic',
+                prompt: 'Match each picture with the correct word.',
+                pairs: matchItems.map((v, i) => ({
+                    id: `p_${i}`,
+                    art: v.art,
+                    word: v.word
+                }))
+            });
+
+            // 5. Speaking: Listen and repeat vocabulary
+            bank.push({
+                uid: `u${unitObj.unit}_b_spk_word`,
+                type: 'speaking',
+                skill: 'speaking',
+                level: 'basic',
+                role: 'girl',
+                art: unitObj.vocab[0].art,
+                audioText: unitObj.vocab[0].word,
+                targetText: unitObj.vocab[0].word,
+                showTarget: true,
+                prompt: `Listen and repeat: "${unitObj.vocab[0].word}"`
+            });
+
+            // 6. Writing: Trace & Copy Vocabulary
+            bank.push({
+                uid: `u${unitObj.unit}_b_wrt_trace`,
+                type: 'trace_copy',
+                skill: 'writing',
+                level: 'basic',
+                art: unitObj.vocab[0].art,
+                targetText: unitObj.vocab[0].word,
+                prompt: `Trace and write the word: "${unitObj.vocab[0].word}"`
+            });
+
+            // ---------------- LEVEL 2: STANDARD ----------------
+            // 7. Listening: Listen and choose the correct sentence
+            const vStd = unitObj.vocab[1] || unitObj.vocab[0];
+            const sentDist = shuffle(otherVocab.map(x => x.pattern)).slice(0, 2);
+            bank.push(makeChoiceQ({
+                uid: `u${unitObj.unit}_s_lis_sent`,
+                skill: 'listening',
+                level: 'standard',
+                role: 'boy',
+                art: vStd.art,
+                audioText: vStd.pattern,
+                prompt: 'Listen and choose the correct sentence.',
+                options: [
+                    { label: vStd.pattern },
+                    { label: sentDist[0] },
+                    { label: sentDist[1] }
+                ],
+                correctIndex: 0
+            }));
+
+            // 8. Listening: Listen and fill in the missing word
+            const vGap = unitObj.vocab[2] || unitObj.vocab[0];
+            const gappedSent = vGap.pattern.replace(new RegExp(`\\b${vGap.word}\\b`, 'i'), '_____');
+            bank.push({
+                uid: `u${unitObj.unit}_s_lis_fill`,
+                type: 'fill_blank',
+                skill: 'listening',
+                level: 'standard',
+                role: 'girl',
+                art: vGap.art,
+                audioText: vGap.pattern,
+                prompt: `Listen and type the missing word: "${gappedSent}"`,
+                acceptedAnswers: [vGap.word]
+            });
+
+            // 9. Reading: Odd One Out
+            const oddForeign = shuffle(otherVocab)[0];
+            bank.push(makeChoiceQ({
+                uid: `u${unitObj.unit}_s_read_odd`,
+                skill: 'reading',
+                level: 'standard',
+                prompt: 'Odd one out! Choose the word from a different topic.',
+                options: [
+                    { label: oddForeign.word, art: oddForeign.art },
+                    { label: unitObj.vocab[0].word, art: unitObj.vocab[0].art },
+                    { label: unitObj.vocab[1].word, art: unitObj.vocab[1].art }
+                ],
+                correctIndex: 0
+            }));
+
+            // 10. Reading: Unscramble Word Letters
+            const vUnsc = unitObj.vocab[1] || unitObj.vocab[0];
+            bank.push({
+                uid: `u${unitObj.unit}_s_read_unsc_word`,
+                type: 'unscramble',
+                mode: 'letters',
+                skill: 'reading',
+                level: 'standard',
+                art: vUnsc.art,
+                prompt: `Unscramble the letters (${vUnsc.vi}):`,
+                tiles: shuffle(vUnsc.word.split('')),
+                answerText: vUnsc.word
+            });
+
+            // 11. Reading: Short Passage True/False
+            bank.push(makeChoiceQ({
+                uid: `u${unitObj.unit}_s_read_tf`,
+                skill: 'reading',
+                level: 'standard',
+                passage: unitObj.passage,
+                prompt: `Read and choose True or False: "${unitObj.passageTF.stmt}"`,
+                options: [{ label: 'True' }, { label: 'False' }],
+                correctIndex: unitObj.passageTF.ans === 'True' ? 0 : 1
+            }));
+
+            // 12. Speaking: Speak using picture prompt
+            bank.push({
+                uid: `u${unitObj.unit}_s_spk_pat`,
+                type: 'speaking',
+                skill: 'speaking',
+                level: 'standard',
+                role: 'boy',
+                art: vStd.art,
+                audioText: vStd.pattern,
+                targetText: vStd.pattern,
+                showTarget: true,
+                prompt: `Look at the picture and say: "${vStd.pattern}"`
+            });
+
+            // 13. Writing: Spell word from picture & missing letters clue
+            const wSpell = unitObj.vocab[2] || unitObj.vocab[0];
+            const hint = wSpell.word.split('').map((ch, i) => (i === 0 || i === wSpell.word.length - 1) ? ch : '_').join(' ');
+            bank.push({
+                uid: `u${unitObj.unit}_s_wrt_spell`,
+                type: 'fill_blank',
+                skill: 'writing',
+                level: 'standard',
+                art: wSpell.art,
+                prompt: `Spell the word (${wSpell.vi}) — Clue: ${hint}`,
+                acceptedAnswers: [wSpell.word]
+            });
+
+            // ---------------- LEVEL 3: CHALLENGE ----------------
+            // 14. Listening: Short UK Girl & Boy Dialogue Comprehension
+            bank.push(makeChoiceQ({
+                uid: `u${unitObj.unit}_c_lis_dlg`,
+                skill: 'listening',
+                level: 'challenge',
+                dialogue: unitObj.dialogue,
+                prompt: `Listen to the UK dialogue and answer: ${unitObj.dialogueQ.q}`,
+                options: unitObj.dialogueQ.opts.map(o => ({ label: o })),
+                correctIndex: unitObj.dialogueQ.ansIdx
+            }));
+
+            // 15. Reading: Extended Comprehension Question
+            bank.push(makeChoiceQ({
+                uid: `u${unitObj.unit}_c_read_comp`,
+                skill: 'reading',
+                level: 'challenge',
+                passage: unitObj.passage,
+                prompt: unitObj.passageQ.q,
+                options: unitObj.passageQ.opts.map(o => ({ label: o })),
+                correctIndex: unitObj.passageQ.ansIdx
+            }));
+
+            // 16. Reading/Writing: Rearrange Words to Form Sentence
+            const wSent = unitObj.vocab[0];
+            const cleanWords = wSent.pattern.replace(/[.?!]/g, '').split(' ');
+            bank.push({
+                uid: `u${unitObj.unit}_c_wrt_rearrange`,
+                type: 'unscramble',
+                mode: 'words',
+                skill: 'writing',
+                level: 'challenge',
+                art: wSent.art,
+                prompt: 'Rearrange the words to make a correct sentence:',
+                tiles: shuffle(cleanWords),
+                answerText: cleanWords.join(' ')
+            });
+
+            // 17. Speaking Challenge: Answer without seeing the sentence
+            const spkChal = unitObj.vocab[2] || unitObj.vocab[0];
+            bank.push({
+                uid: `u${unitObj.unit}_c_spk_blind`,
+                type: 'speaking',
+                skill: 'speaking',
+                level: 'challenge',
+                role: 'girl',
+                art: spkChal.art,
+                audioText: spkChal.pattern,
+                targetText: spkChal.pattern,
+                showTarget: false,
+                prompt: 'Challenge: Listen to the UK audio and say the sentence without seeing it!'
+            });
+
+            // 18. Mixed-Unit Vocabulary Challenge
+            if (earlierVocab.length > 0) {
+                const prev = shuffle(earlierVocab)[0];
+                const prevDist = shuffle(otherVocab.filter(x => x.word !== prev.word)).slice(0, 2);
+                bank.push(makeChoiceQ({
+                    uid: `u${unitObj.unit}_c_mix_vocab`,
+                    skill: 'reading',
+                    level: 'challenge',
+                    art: prev.art,
+                    prompt: `Mixed Review: Complete "${prev.pattern.replace(new RegExp(`\\b${prev.word}\\b`, 'i'), '_____')}"`,
+                    options: [
+                        { label: prev.word },
+                        { label: prevDist[0].word },
+                        { label: prevDist[1].word }
+                    ],
+                    correctIndex: 0
+                }));
+            }
+
+            return bank;
+        }
+
+        /* =========================================================================
+           11. UNIT PRACTICE & 4-REVIEW CONTROLLERS
+           ========================================================================= */
+        let prConfig = { unitNum: 1, level: 'all', skill: 'all' };
+
+        function openUnitPractice(unitNum) {
+            prConfig = { unitNum, level: 'all', skill: 'all' };
+            renderUnitPracticeView();
+        }
+
+        function renderUnitPracticeView() {
+            const unitObj = CURRICULUM.find(u => u.unit === prConfig.unitNum);
+            document.getElementById('subview-breadcrumb').textContent = `✏️ Unit ${unitObj.unit}: ${unitObj.title}`;
+
+            const ws = document.getElementById('view-workspace');
+            ws.innerHTML = `
+                <div class="sticker-card p-5 bg-[#FFFDF7]">
+                    <!-- Level & Skill Filter Pills -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-5 border-b-2 border-dashed border-[#5C3D2E]/25">
+                        <div class="flex flex-wrap gap-1.5">
+                            ${[
+                                { id: 'all', name: 'All Levels', bg: '#FFF7D6' },
+                                { id: 'basic', name: 'Basic', bg: '#D4F1E8' },
+                                { id: 'standard', name: 'Standard', bg: '#D6ECFA' },
+                                { id: 'challenge', name: 'Challenge', bg: '#E5D9F2' }
+                            ].map(l => `
+                                <button type="button" onclick="setPracticeFilter('${l.id}', prConfig.skill)" style="background-color:${prConfig.level === l.id ? l.bg : '#FFFFFF'}" class="btn-bunny px-3 py-1.5 rounded-xl font-black text-xs sm:text-sm">
+                                    ${l.name}
+                                </button>
+                            `).join('')}
+                        </div>
+
+                        <div class="flex flex-wrap gap-1.5">
+                            ${[
+                                { id: 'all', label: 'All Skills' },
+                                { id: 'listening', label: '🎧 Listening' },
+                                { id: 'speaking', label: '🎤 Speaking' },
+                                { id: 'reading', label: '📖 Reading' },
+                                { id: 'writing', label: '✍️ Writing' }
+                            ].map(s => `
+                                <button type="button" onclick="setPracticeFilter(prConfig.level, '${s.id}')" class="btn-bunny ${prConfig.skill === s.id ? 'bg-[#FF9E44]' : 'bg-white'} px-3 py-1.5 rounded-xl font-black text-xs">
+                                    ${s.label}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div id="practice-runner-box"></div>
+                </div>
+            `;
+
+            let pool = buildUnitQuestionBank(unitObj);
+            if (prConfig.level !== 'all') pool = pool.filter(q => q.level === prConfig.level);
+            if (prConfig.skill !== 'all') pool = pool.filter(q => q.skill === prConfig.skill);
+
+            // Deduplicate by uid and randomize order
+            const sessionQs = shuffle(pool).slice(0, 10);
+            startPracticeRunner(sessionQs, 'practice-runner-box', (pct) => {
+                if (pct >= 60 && !state.completedUnits.includes(unitObj.unit)) {
+                    state.completedUnits.push(unitObj.unit);
+                    saveState();
+                }
+            });
+        }
+
+        function setPracticeFilter(lvl, skill) {
+            prConfig.level = lvl;
+            prConfig.skill = skill;
+            renderUnitPracticeView();
+        }
+
+        function startGroupReview(groupId) {
+            const grp = REVIEW_GROUPS.find(g => g.id === groupId);
+            if (!grp) return;
+            document.getElementById('subview-breadcrumb').textContent = `🌸 ${grp.title} | ${grp.subtitle}`;
+
+            const units = CURRICULUM.filter(u => grp.units.includes(u.unit));
+            const allQs = units.flatMap(u => buildUnitQuestionBank(u));
+            const balanced = [
+                ...shuffle(allQs.filter(q => q.skill === 'listening')).slice(0, 3),
+                ...shuffle(allQs.filter(q => q.skill === 'speaking')).slice(0, 2),
+                ...shuffle(allQs.filter(q => q.skill === 'reading')).slice(0, 4),
+                ...shuffle(allQs.filter(q => q.skill === 'writing')).slice(0, 3)
+            ];
+            const sessionQs = shuffle(balanced);
+
+            const ws = document.getElementById('view-workspace');
+            ws.innerHTML = `<div class="sticker-card p-5 bg-[#FFFDF7]"><div id="review-runner-box"></div></div>`;
+
+            startPracticeRunner(sessionQs, 'review-runner-box', (pct) => {
+                state.reviewScores[grp.id] = pct;
+                saveState();
+            });
+        }
+
+        /* =========================================================================
+           12. SAFE IN-APP MICROPHONE & SPEECH RECOGNITION (NO RELOADS / REDIRECTS)
+           ========================================================================= */
+        let micState = {
+            stream: null,
+            recorder: null,
+            chunks: [],
+            audioUrl: null,
+            recognition: null,
+            isRecording: false
+        };
+
+        function stopMicRecording(cleanupUrl = false) {
+            micState.isRecording = false;
+            if (micState.recorder && micState.recorder.state !== 'inactive') {
+                try { micState.recorder.stop(); } catch (e) {}
+            }
+            if (micState.stream) {
+                try { micState.stream.getTracks().forEach(t => t.stop()); } catch (e) {}
+                micState.stream = null;
+            }
+            if (micState.recognition) {
+                try { micState.recognition.abort(); } catch (e) {}
+                micState.recognition = null;
+            }
+            if (cleanupUrl && micState.audioUrl) {
+                URL.revokeObjectURL(micState.audioUrl);
+                micState.audioUrl = null;
+            }
+        }
+
+        async function toggleInAppMicrophone(targetText, mode = 'runner') {
+            if (micState.isRecording) {
+                stopMicRecording(false);
+                updateMicUI('Stopped. Tap to speak', false);
+                return;
+            }
+
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                updateMicUI('Tap "I said it!" below', false);
+                return;
+            }
+
+            try {
+                updateMicUI('Listening…', true);
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                micState.stream = stream;
+                micState.chunks = [];
+                micState.isRecording = true;
+
+                // MediaRecorder for student voice playback ("My Voice")
+                if (typeof MediaRecorder !== 'undefined') {
+                    const rec = new MediaRecorder(stream);
+                    micState.recorder = rec;
+                    rec.ondataavailable = (ev) => {
+                        if (ev.data && ev.data.size > 0) micState.chunks.push(ev.data);
+                    };
+                    rec.onstop = () => {
+                        if (micState.chunks.length > 0) {
+                            if (micState.audioUrl) URL.revokeObjectURL(micState.audioUrl);
+                            const blob = new Blob(micState.chunks, { type: 'audio/webm' });
+                            micState.audioUrl = URL.createObjectURL(blob);
+                            const playBtn = document.getElementById('my-voice-play-btn');
+                            if (playBtn) playBtn.classList.remove('hidden');
+                        }
+                    };
+                    rec.start();
+                }
+
+                updateMicUI('Recording…', true);
+
+                // Parallel SpeechRecognition (en-GB) if supported
+                const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (SpeechRec) {
+                    const sr = new SpeechRec();
+                    sr.lang = 'en-GB';
+                    sr.interimResults = false;
+                    sr.maxAlternatives = 3;
+                    micState.recognition = sr;
+
+                    sr.onresult = (event) => {
+                        const transcripts = Array.from(event.results[0]).map(r => normalizeAnswer(r.transcript));
+                        const expected = normalizeAnswer(targetText);
+                        const expWords = expected.split(' ').filter(Boolean);
+
+                        // Forgiving word-overlap evaluation for 7–8-year-old learners
+                        const matched = transcripts.some(said => {
+                            if (said.includes(expected) || expected.includes(said)) return true;
+                            const saidWords = said.split(' ');
+                            const overlap = expWords.filter(w => saidWords.includes(w)).length;
+                            return expWords.length > 0 && (overlap / expWords.length) >= 0.6;
+                        });
+
+                        stopMicRecording(false);
+                        const heard = transcripts[0] || '';
+                        if (matched) {
+                            updateMicUI(`Great job! ("${heard}")`, false);
+                            if (mode === 'runner') finalizeRunnerQuestion(1, 1, 'Great job!');
+                            else recordExamAnswer(targetText);
+                        } else {
+                            updateMicUI(`Try again ("${heard}")`, false);
+                        }
+                    };
+
+                    sr.onerror = () => {
+                        stopMicRecording(false);
+                        updateMicUI('Try again', false);
+                    };
+
+                    sr.onend = () => {
+                        if (micState.isRecording) {
+                            stopMicRecording(false);
+                            updateMicUI('Tap to speak', false);
+                        }
+                    };
+
+                    sr.start();
+                } else {
+                    // Auto-stop recording after 4 seconds on browsers without SpeechRecognition (e.g., iOS Safari WebView)
+                    setTimeout(() => {
+                        if (micState.isRecording) {
+                            stopMicRecording(false);
+                            updateMicUI('Great job!', false);
+                            if (mode === 'runner') finalizeRunnerQuestion(1, 1, 'Great job!');
+                            else recordExamAnswer(targetText);
+                        }
+                    }, 4000);
+                }
+            } catch (err) {
+                stopMicRecording(false);
+                updateMicUI('Tap to speak', false);
+                showToast('Microphone permission denied. Use "I said it!" below.');
+            }
+        }
+
+        function updateMicUI(statusText, active) {
+            const st = document.getElementById('mic-status-label');
+            const btn = document.getElementById('mic-main-btn');
+            if (st) st.textContent = statusText;
+            if (btn) {
+                if (active) {
+                    btn.classList.add('rec-pulse', 'bg-[#FF6B6B]', 'text-white');
+                    btn.innerHTML = '<i class="fa-solid fa-stop"></i> Stop';
+                } else {
+                    btn.classList.remove('rec-pulse', 'bg-[#FF6B6B]', 'text-white');
+                    btn.innerHTML = '<i class="fa-solid fa-microphone"></i> Tap to speak';
+                }
+            }
+        }
+
+        function playStudentRecording() {
+            if (!micState.audioUrl) return;
+            const audio = new Audio(micState.audioUrl);
+            audio.play().catch(() => {});
+        }
+
+        /* =========================================================================
+           13. PRACTICE & REVIEW EXERCISE RUNNER (STRICT SCORING, NO DUPLICATE POINTS)
+           ========================================================================= */
+        let runner = null;
+
+        function startPracticeRunner(questions, containerId, onComplete) {
+            runner = {
+                questions,
+                idx: 0,
+                earnedPts: 0,
+                maxPts: 0,
+                containerId,
+                onComplete,
+                locked: false,
+                builtTiles: [],
+                selectedLeft: null,
+                matchedPairs: {}
+            };
+            renderRunnerStep();
+        }
+
+        function renderRunnerStep() {
+            stopMicRecording(true);
+            const r = runner;
+            const box = document.getElementById(r.containerId);
+            if (!box) return;
+
+            if (!r.questions.length) {
+                box.innerHTML = `<div class="text-center py-8 font-black">No exercises in this filter.</div>`;
+                return;
+            }
+
+            if (r.idx >= r.questions.length) {
+                const pct = r.maxPts > 0 ? Math.round((r.earnedPts / r.maxPts) * 100) : 100;
+                if (r.onComplete) r.onComplete(pct);
+
+                box.innerHTML = `
+                    <div class="text-center py-8 bg-[#FFF7D6]/75 rounded-3xl border-3 border-[#5C3D2E] p-6">
+                        <div class="w-20 h-20 mx-auto mb-3">${getMascotSVG(state.avatar)}</div>
+                        <h3 class="text-2xl font-black mb-1">${pct >= 75 ? 'Excellent!' : 'Well done!'}</h3>
+                        <p class="text-lg font-extrabold mb-4">Score: ${Math.round(r.earnedPts * 10) / 10} / ${r.maxPts} (${pct}%)</p>
+                        <div class="flex flex-wrap justify-center gap-3">
+                            <button type="button" onclick="renderUnitPracticeView()" class="btn-bunny bg-[#D6ECFA] px-5 py-2.5 rounded-2xl font-black text-sm">More Practice</button>
+                            <button type="button" onclick="goHome()" class="btn-bunny bg-[#FF9E44] px-5 py-2.5 rounded-2xl font-black text-sm">Classroom</button>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            const q = r.questions[r.idx];
+            const skillLabels = { listening: '🎧 Listening', speaking: '🎤 Speaking', reading: '📖 Reading', writing: '✍️ Writing' };
+            let bodyHtml = '';
+
+            if (q.type === 'choice') {
+                bodyHtml = `
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl mx-auto">
+                        ${q.options.map(opt => `
+                            <button type="button" data-opt-id="${opt.id}" onclick="handleChoiceAnswer('${opt.id}', this)" class="run-opt-btn btn-bunny bg-white hover:bg-[#FFF7D6] p-3.5 rounded-2xl font-black text-base flex flex-col items-center justify-center gap-2">
+                                ${opt.art ? `<div class="w-20 h-20">${renderIllustration(opt.art, opt.label)}</div>` : ''}
+                                <span>${opt.label}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (q.type === 'phonics_blend') {
+                bodyHtml = `
+                    <div class="max-w-md mx-auto text-center">
+                        <div class="flex justify-center gap-2 mb-4">
+                            ${q.blend.parts.map((pt, i) => `
+                                <button type="button" onclick="playPhonemeSound('${q.blend.phonemes[Math.min(i, q.blend.phonemes.length - 1)]}')" class="btn-bunny bg-[#FFD6E0] w-14 h-14 rounded-2xl font-black text-2xl">
+                                    ${pt}
+                                </button>
+                            `).join('')}
+                        </div>
+                        <button type="button" onclick="playPhonicsBlend(${JSON.stringify(q.blend.phonemes).replace(/"/g, '&quot;')}, '${escAttr(q.blend.word)}')" class="btn-bunny bg-[#D6ECFA] px-5 py-2.5 rounded-2xl font-black text-sm mb-3">
+                            🔊 Blend Sounds → "${q.blend.word}"
+                        </button>
+                        <div>
+                            <button type="button" onclick="finalizeRunnerQuestion(1, 1, 'Great job!')" class="btn-bunny bg-[#D4F1E8] px-6 py-2 rounded-2xl font-black text-sm">
+                                ✅ Done
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else if (q.type === 'matching') {
+                const rightWords = shuffle(q.pairs.map(p => ({ id: p.id, word: p.word })));
+                bodyHtml = `
+                    <div class="max-w-xl mx-auto">
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="space-y-2.5">
+                                ${q.pairs.map(p => `
+                                    <button type="button" id="mleft-${p.id}" onclick="selectMatchLeft('${p.id}')" class="btn-bunny w-full bg-white p-2.5 rounded-2xl flex items-center justify-center">
+                                        <div class="w-16 h-16">${renderIllustration(p.art, p.word)}</div>
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div class="space-y-2.5">
+                                ${rightWords.map(rw => `
+                                    <button type="button" id="mright-${rw.id}" onclick="selectMatchRight('${rw.id}')" class="btn-bunny w-full h-[86px] bg-[#FFF7D6] p-2.5 rounded-2xl font-black text-lg">
+                                        ${rw.word}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" onclick="submitMatchingQuestion()" class="btn-bunny bg-[#D4F1E8] px-6 py-2.5 rounded-2xl font-black text-sm">Check Matches</button>
+                        </div>
+                    </div>
+                `;
+            } else if (q.type === 'fill_blank') {
+                bodyHtml = `
+                    <div class="max-w-md mx-auto flex gap-2">
+                        <input id="fill-blank-inp" type="text" placeholder="Type answer..." onkeydown="if(event.key==='Enter'){event.preventDefault();submitFillBlank();}" class="flex-1 bg-white border-3 border-[#5C3D2E] rounded-2xl px-4 py-2.5 font-black text-center text-lg outline-none">
+                        <button type="button" onclick="submitFillBlank()" class="btn-bunny bg-[#D4F1E8] px-5 py-2.5 rounded-2xl font-black text-sm">Check</button>
+                    </div>
+                `;
+            } else if (q.type === 'unscramble') {
+                const isWords = q.mode === 'words';
+                bodyHtml = `
+                    <div class="max-w-xl mx-auto">
+                        <div id="unsc-slot" class="min-h-[58px] bg-white border-3 border-dashed border-[#5C3D2E] rounded-2xl p-3 mb-4 flex flex-wrap items-center justify-center gap-2"></div>
+                        <div class="flex flex-wrap justify-center gap-2 mb-4">
+                            ${q.tiles.map((t, i) => `
+                                <button type="button" id="utile-${i}" onclick="pickUnscrambleTile(${i}, '${escAttr(t)}')" class="btn-bunny bg-[#FFF7D6] ${isWords ? 'px-4 py-2 text-base' : 'w-11 h-11 text-xl'} rounded-2xl font-black">
+                                    ${t}
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div class="flex justify-center gap-2.5">
+                            <button type="button" onclick="resetUnscrambleTiles()" class="btn-bunny bg-white px-4 py-2 rounded-2xl font-black text-xs">Reset</button>
+                            <button type="button" onclick="submitUnscramble()" class="btn-bunny bg-[#D4F1E8] px-6 py-2 rounded-2xl font-black text-sm">Check</button>
+                        </div>
+                    </div>
+                `;
+            } else if (q.type === 'trace_copy') {
+                bodyHtml = `
+                    <div class="max-w-md mx-auto">
+                        <canvas id="trace-pad" width="320" height="90" class="w-full bg-white border-3 border-[#5C3D2E] rounded-2xl mb-3 touch-none cursor-crosshair"></canvas>
+                        <div class="flex gap-2">
+                            <input id="fill-blank-inp" type="text" placeholder="Type word..." onkeydown="if(event.key==='Enter'){event.preventDefault();submitFillBlank();}" class="flex-1 bg-white border-3 border-[#5C3D2E] rounded-2xl px-4 py-2.5 font-black text-center text-lg outline-none">
+                            <button type="button" onclick="submitFillBlank()" class="btn-bunny bg-[#D4F1E8] px-5 py-2.5 rounded-2xl font-black text-sm">Check</button>
+                        </div>
+                    </div>
+                `;
+            } else if (q.type === 'speaking') {
+                bodyHtml = `
+                    <div class="max-w-md mx-auto bg-white border-3 border-[#5C3D2E] rounded-3xl p-5 text-center">
+                        ${q.showTarget ? `<div class="text-2xl font-black text-[#E86F8A] mb-3">"${q.targetText}"</div>` : ''}
+                        <div class="mb-4">${renderAudioBar(q.audioText, q.role)}</div>
+                        <div class="flex flex-wrap items-center justify-center gap-2 mb-2">
+                            <button type="button" id="mic-main-btn" onclick="toggleInAppMicrophone('${escAttr(q.targetText)}', 'runner')" class="btn-bunny bg-[#FFD6E0] px-5 py-2.5 rounded-full font-black text-sm inline-flex items-center gap-2">
+                                <i class="fa-solid fa-microphone"></i> Tap to speak
+                            </button>
+                            <button type="button" id="my-voice-play-btn" onclick="playStudentRecording()" class="hidden btn-bunny bg-[#D6ECFA] px-4 py-2.5 rounded-full font-black text-xs">
+                                🔊 My Voice
+                            </button>
+                        </div>
+                        <div id="mic-status-label" class="text-xs font-black text-[#855E4B] mb-3">Tap to speak</div>
+                        <button type="button" onclick="finalizeRunnerQuestion(1, 1, 'Well done!')" class="text-xs font-black underline text-[#5C3D2E]">
+                            ✅ I said it!
+                        </button>
+                    </div>
+                `;
+            }
+
+            const audioSection = q.isPhonics
+                ? `<div class="mb-3"><button type="button" onclick="playPhonemeSound('${q.phoneme}')" class="btn-bunny bg-[#FFD6E0] px-5 py-2.5 rounded-2xl font-black text-sm">🔊 Play Sound</button></div>`
+                : (q.dialogue
+                    ? `<div class="mb-3 flex justify-center gap-2">
+                            <button type="button" onclick="playCurrentDialogue('normal')" class="btn-bunny bg-[#D6ECFA] px-4 py-2 rounded-2xl font-black text-xs sm:text-sm"><i class="fa-solid fa-play"></i> Play Dialogue</button>
+                            <button type="button" onclick="playCurrentDialogue('slow')" class="btn-bunny bg-[#FFF7D6] px-3 py-2 rounded-2xl font-black text-xs">🐢 Slow</button>
+                       </div>`
+                    : (q.audioText && q.type !== 'speaking' ? `<div class="mb-3">${renderAudioBar(q.audioText, q.role)}</div>` : ''));
+
+            box.innerHTML = `
+                <div class="bg-[#FFF7D6]/55 border-3 border-[#5C3D2E] rounded-3xl p-4 sm:p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="bg-[#E5D9F2] border-2 border-[#5C3D2E] px-3 py-1 rounded-full text-xs font-black">${skillLabels[q.skill]} • ${q.level.toUpperCase()}</span>
+                        <span class="text-xs font-black">${r.idx + 1} / ${r.questions.length}</span>
+                    </div>
+
+                    ${q.passage ? `<div class="bg-white border-2 border-[#5C3D2E] rounded-2xl p-4 mb-4 max-w-2xl mx-auto text-sm sm:text-base font-bold">${q.passage}</div>` : ''}
+
+                    <div class="text-center mb-5">
+                        ${q.art ? `<div class="w-24 h-24 mx-auto mb-2 bg-white rounded-3xl border-2 border-[#5C3D2E] p-2">${renderIllustration(q.art, '')}</div>` : ''}
+                        <h3 class="text-lg sm:text-xl font-black mb-3">${q.prompt}</h3>
+                        ${audioSection}
+                    </div>
+
+                    ${bodyHtml}
+
+                    <div id="runner-feedback" class="hidden mt-5 max-w-md mx-auto p-3.5 rounded-2xl border-3 border-[#5C3D2E] text-center"></div>
+                </div>
+            `;
+
+            if (q.type === 'trace_copy') setupTracePad(q.targetText);
+        }
+
+        function playCurrentDialogue(speed = 'normal') {
+            const q = runner.questions[runner.idx];
+            if (!q || !q.dialogue) return;
+            if (!('speechSynthesis' in window) || !ukAudio.hasUK) {
+                showToast('British English (en-GB) voice not detected.');
+                return;
+            }
+            stopAudio();
+            const rate = speed === 'slow' ? 0.75 : 0.96;
+            q.dialogue.forEach(turn => {
+                const u = new SpeechSynthesisUtterance(turn.line);
+                u.lang = 'en-GB';
+                u.voice = turn.role === 'boy' ? ukAudio.boyVoice : ukAudio.girlVoice;
+                u.pitch = turn.role === 'boy' ? 1.12 : 1.16;
+                u.rate = rate;
+                window.speechSynthesis.speak(u);
+            });
+        }
+
+        function setupTracePad(word) {
+            const canvas = document.getElementById('trace-pad');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.font = '900 44px Nunito, sans-serif';
+            ctx.fillStyle = '#E5D9F2';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(word, canvas.width / 2, canvas.height / 2);
+
+            let drawing = false;
+            ctx.strokeStyle = '#FF9E44';
+            ctx.lineWidth = 5;
+            ctx.lineCap = 'round';
+
+            const getPos = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const cx = e.touches ? e.touches[0].clientX : e.clientX;
+                const cy = e.touches ? e.touches[0].clientY : e.clientY;
+                return { x: (cx - rect.left) * (canvas.width / rect.width), y: (cy - rect.top) * (canvas.height / rect.height) };
+            };
+            const start = (e) => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); };
+            const move = (e) => { if (!drawing) return; e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); };
+            const stop = () => { drawing = false; };
+
+            canvas.addEventListener('mousedown', start);
+            canvas.addEventListener('mousemove', move);
+            window.addEventListener('mouseup', stop);
+            canvas.addEventListener('touchstart', start, { passive: false });
+            canvas.addEventListener('touchmove', move, { passive: false });
+            canvas.addEventListener('touchend', stop);
+        }
+
+        // Strict ID-based validation (prevents duplicate clicks and string mismatch bugs)
+        function handleChoiceAnswer(selectedId, btnEl) {
+            if (runner.locked) return;
+            const q = runner.questions[runner.idx];
+            const isCorrect = selectedId === q.correctId;
+
+            document.querySelectorAll('.run-opt-btn').forEach(b => {
+                b.disabled = true;
+                if (b.getAttribute('data-opt-id') === q.correctId) b.classList.add('bg-[#D4F1E8]');
+            });
+            if (!isCorrect && btnEl) btnEl.classList.add('bg-[#FFD6E0]');
+
+            finalizeRunnerQuestion(isCorrect ? 1 : 0, 1, isCorrect ? 'Great job!' : 'Try again!', q.correctLabel);
+        }
+
+        // Multi-pair Matching with Partial Credit
+        function selectMatchLeft(id) {
+            if (runner.locked) return;
+            runner.selectedLeft = id;
+            document.querySelectorAll('[id^="mleft-"]').forEach(el => el.classList.remove('ring-4', 'ring-[#FF9E44]'));
+            const el = document.getElementById(`mleft-${id}`);
+            if (el) el.classList.add('ring-4', 'ring-[#FF9E44]');
+        }
+
+        function selectMatchRight(rightId) {
+            if (runner.locked || !runner.selectedLeft) return;
+            const leftId = runner.selectedLeft;
+            runner.matchedPairs[leftId] = rightId;
+            runner.selectedLeft = null;
+
+            const colors = ['#FFD6E0', '#D6ECFA', '#E5D9F2'];
+            const idx = Object.keys(runner.matchedPairs).indexOf(leftId) % colors.length;
+            const lEl = document.getElementById(`mleft-${leftId}`);
+            const rEl = document.getElementById(`mright-${rightId}`);
+            if (lEl) { lEl.classList.remove('ring-4', 'ring-[#FF9E44]'); lEl.style.backgroundColor = colors[idx]; }
+            if (rEl) { rEl.style.backgroundColor = colors[idx]; }
+        }
+
+        function submitMatchingQuestion() {
+            if (runner.locked) return;
+            const q = runner.questions[runner.idx];
+            const total = q.pairs.length;
+            let correctCount = 0;
+            q.pairs.forEach(p => {
+                if (runner.matchedPairs[p.id] === p.id) correctCount += 1;
+            });
+            const msg = correctCount === total ? 'Excellent!' : (correctCount > 0 ? 'Well done!' : 'Try again!');
+            finalizeRunnerQuestion(correctCount, total, msg, q.pairs.map(p => p.word).join(', '));
+        }
+
+        function submitFillBlank() {
+            if (runner.locked) return;
+            const inp = document.getElementById('fill-blank-inp');
+            const val = normalizeAnswer(inp ? inp.value : '');
+            if (!val) return;
+            const q = runner.questions[runner.idx];
+            const validList = (q.acceptedAnswers || [q.targetText]).map(normalizeAnswer);
+            const ok = validList.includes(val);
+            finalizeRunnerQuestion(ok ? 1 : 0, 1, ok ? 'Great job!' : 'Try again!', (q.acceptedAnswers || [q.targetText])[0]);
+        }
+
+        function pickUnscrambleTile(i, val) {
+            if (runner.locked) return;
+            const btn = document.getElementById(`utile-${i}`);
+            if (!btn || btn.disabled) return;
+            btn.disabled = true;
+            btn.classList.add('opacity-35');
+            runner.builtTiles.push({ i, val });
+            renderUnscrambleSlot();
+        }
+
+        function resetUnscrambleTiles() {
+            if (runner.locked) return;
+            runner.builtTiles.forEach(t => {
+                const b = document.getElementById(`utile-${t.i}`);
+                if (b) { b.disabled = false; b.classList.remove('opacity-35'); }
+            });
+            runner.builtTiles = [];
+            renderUnscrambleSlot();
+        }
+
+        function renderUnscrambleSlot() {
+            const slot = document.getElementById('unsc-slot');
+            const q = runner.questions[runner.idx];
+            if (!slot) return;
+            slot.innerHTML = runner.builtTiles.map(t => `
+                <span class="bg-[#FF9E44] border-2 border-[#5C3D2E] ${q.mode === 'words' ? 'px-3 py-1 text-base' : 'w-10 h-10 text-lg flex items-center justify-center'} rounded-xl font-black">${t.val}</span>
+            `).join('');
+        }
+
+        function submitUnscramble() {
+            if (runner.locked || !runner.builtTiles.length) return;
+            const q = runner.questions[runner.idx];
+            const userStr = q.mode === 'words'
+                ? runner.builtTiles.map(t => t.val).join(' ')
+                : runner.builtTiles.map(t => t.val).join('');
+            const ok = normalizeAnswer(userStr) === normalizeAnswer(q.answerText);
+            finalizeRunnerQuestion(ok ? 1 : 0, 1, ok ? 'Excellent!' : 'Try again!', q.answerText);
+        }
+
+        // Single source-of-truth scoring lock per question
+        function finalizeRunnerQuestion(earned, maxPts, praise, correctAnswerDisplay = '') {
+            if (runner.locked) return;
+            runner.locked = true;
+
+            const q = runner.questions[runner.idx];
+            runner.earnedPts += earned;
+            runner.maxPts += maxPts;
+            recordSkillPoints(q.skill, earned, maxPts);
+
+            const fullOk = earned === maxPts;
+            const fb = document.getElementById('runner-feedback');
+            if (!fb) return;
+            fb.classList.remove('hidden');
+            fb.className = `mt-5 max-w-md mx-auto p-3.5 rounded-2xl border-3 border-[#5C3D2E] text-center ${fullOk ? 'bg-[#D4F1E8]' : 'bg-[#FFD6E0]'}`;
+            fb.innerHTML = `
+                <div class="text-lg font-black mb-1">${fullOk ? '⭐' : '🐰'} ${praise}</div>
+                ${!fullOk && correctAnswerDisplay ? `<div class="text-xs font-extrabold mb-2">Answer: <strong>${correctAnswerDisplay}</strong></div>` : ''}
+                <button type="button" onclick="advanceRunner()" class="btn-bunny bg-white px-5 py-1.5 rounded-xl font-black text-sm">Next ➡️</button>
+            `;
+        }
+
+        function advanceRunner() {
+            runner.idx += 1;
+            runner.locked = false;
+            runner.builtTiles = [];
+            runner.selectedLeft = null;
+            runner.matchedPairs = {};
+            renderRunnerStep();
+        }
+
+        /* =========================================================================
+           14. TIMED MIDTERM TEST (UNITS 1–8) & FINAL TEST (UNITS 1–16)
+           ========================================================================= */
+        let exam = null;
+
+        function startAssessmentTest(type) {
+            const unitSlice = type === 'midterm' ? CURRICULUM.slice(0, 8) : CURRICULUM;
+            const qPerSkill = type === 'midterm' ? 3 : 4; // 12 Qs Midterm, 16 Qs Final
+            const totalSecs = type === 'midterm' ? 600 : 900;
+
+            // Filter exam-compatible types (choice, fill_blank, unscramble, speaking) across all 4 skills
+            const allPool = unitSlice.flatMap(u => buildUnitQuestionBank(u))
+                .filter(q => ['choice', 'fill_blank', 'unscramble', 'speaking'].includes(q.type));
+
+            const selected = shuffle([
+                ...shuffle(allPool.filter(q => q.skill === 'listening')).slice(0, qPerSkill),
+                ...shuffle(allPool.filter(q => q.skill === 'speaking')).slice(0, qPerSkill),
+                ...shuffle(allPool.filter(q => q.skill === 'reading')).slice(0, qPerSkill),
+                ...shuffle(allPool.filter(q => q.skill === 'writing')).slice(0, qPerSkill)
+            ]);
+
+            exam = {
+                type,
+                questions: selected,
+                answersMap: new Array(selected.length).fill(null),
+                idx: 0,
+                secondsLeft: totalSecs
+            };
+
+            renderExamScreen();
+            clearActiveTimer();
+            activeTimer = setInterval(() => {
+                exam.secondsLeft -= 1;
+                const el = document.getElementById('exam-timer-val');
+                if (el) {
+                    const m = Math.floor(exam.secondsLeft / 60);
+                    const s = exam.secondsLeft % 60;
+                    el.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+                }
+                if (exam.secondsLeft <= 0) submitExam();
+            }, 1000);
+        }
+
+        function renderExamScreen() {
+            const q = exam.questions[exam.idx];
+            const saved = exam.answersMap[exam.idx];
+            const ws = document.getElementById('view-workspace');
+
+            let inputHtml = '';
+            if (q.type === 'choice') {
+                inputHtml = `
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl mx-auto">
+                        ${q.options.map(opt => `
+                            <button type="button" onclick="recordExamAnswer('${opt.id}')" class="btn-bunny p-3.5 rounded-2xl font-black text-base flex flex-col items-center justify-center gap-2 ${saved === opt.id ? 'bg-[#E5D9F2] ring-4 ring-[#FF9E44]' : 'bg-white'}">
+                                ${opt.art ? `<div class="w-16 h-16">${renderIllustration(opt.art, opt.label)}</div>` : ''}
+                                <span>${opt.label}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (q.type === 'fill_blank' || q.type === 'unscramble') {
+                inputHtml = `
+                    <div class="max-w-md mx-auto">
+                        <input type="text" value="${saved || ''}" oninput="recordExamAnswer(this.value, false)" placeholder="Write your answer..." class="w-full bg-white border-3 border-[#5C3D2E] rounded-2xl px-4 py-3 font-black text-center text-lg outline-none">
+                        ${q.tiles ? `<div class="text-xs font-extrabold text-[#855E4B] mt-2">Words/Letters: ${q.tiles.join(' / ')}</div>` : ''}
+                    </div>
+                `;
+            } else if (q.type === 'speaking') {
+                inputHtml = `
+                    <div class="max-w-md mx-auto bg-white border-3 border-[#5C3D2E] rounded-3xl p-4 text-center">
+                        ${q.showTarget ? `<div class="text-xl font-black text-[#E86F8A] mb-2">"${q.targetText}"</div>` : ''}
+                        <div class="mb-3">${renderAudioBar(q.audioText, q.role)}</div>
+                        <div class="flex flex-wrap justify-center gap-2 mb-2">
+                            <button type="button" id="mic-main-btn" onclick="toggleInAppMicrophone('${escAttr(q.targetText)}', 'exam')" class="btn-bunny bg-[#FFD6E0] px-4 py-2 rounded-full font-black text-xs">
+                                <i class="fa-solid fa-microphone"></i> Tap to speak
+                            </button>
+                            <button type="button" onclick="recordExamAnswer('${escAttr(q.targetText)}')" class="btn-bunny ${saved ? 'bg-[#D4F1E8]' : 'bg-white'} px-4 py-2 rounded-full font-black text-xs">
+                                ${saved ? '✅ Recorded' : '✅ I said it!'}
+                            </button>
+                        </div>
+                        <div id="mic-status-label" class="text-xs font-black text-[#855E4B]">Tap to speak</div>
+                    </div>
+                `;
+            }
+
+            const audioHtml = q.isPhonics
+                ? `<div class="mb-3"><button type="button" onclick="playPhonemeSound('${q.phoneme}')" class="btn-bunny bg-[#FFD6E0] px-5 py-2 rounded-2xl font-black text-xs">🔊 Play Sound</button></div>`
+                : (q.dialogue
+                    ? `<div class="mb-3"><button type="button" onclick="playExamDialogue()" class="btn-bunny bg-[#D6ECFA] px-4 py-2 rounded-2xl font-black text-xs"><i class="fa-solid fa-play"></i> Play UK Dialogue</button></div>`
+                    : (q.audioText && q.type !== 'speaking' ? `<div class="mb-3">${renderAudioBar(q.audioText, q.role)}</div>` : ''));
+
+            ws.innerHTML = `
+                <div class="sticker-card p-5 bg-[#FFFDF7]">
+                    <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b-2 border-dashed border-[#5C3D2E]/25">
+                        <div class="flex flex-wrap gap-1.5">
+                            ${exam.questions.map((_, i) => `
+                                <button type="button" onclick="jumpExam(${i})" class="w-8 h-8 rounded-xl border-2 border-[#5C3D2E] font-black text-xs ${i === exam.idx ? 'bg-[#FF9E44]' : (exam.answersMap[i] ? 'bg-[#D4F1E8]' : 'bg-white')}">
+                                    ${i + 1}
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div class="bg-[#FFD6E0] border-2 border-[#5C3D2E] px-4 py-1.5 rounded-2xl font-black text-sm">
+                            ⏱️ <span id="exam-timer-val">${Math.floor(exam.secondsLeft / 60)}:${String(exam.secondsLeft % 60).padStart(2, '0')}</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#FFF7D6]/55 border-3 border-[#5C3D2E] rounded-3xl p-5 mb-5 text-center">
+                        <span class="bg-[#D6ECFA] border-2 border-[#5C3D2E] px-3 py-0.5 rounded-full text-xs font-black uppercase">${q.skill}</span>
+                        ${q.art ? `<div class="w-20 h-20 mx-auto my-2 bg-white rounded-2xl border-2 border-[#5C3D2E] p-1.5">${renderIllustration(q.art, '')}</div>` : ''}
+                        ${q.passage ? `<div class="bg-white border-2 border-[#5C3D2E] rounded-2xl p-3 my-3 max-w-xl mx-auto text-sm font-bold">${q.passage}</div>` : ''}
+                        <h3 class="text-lg sm:text-xl font-black my-3">${q.prompt}</h3>
+                        ${audioHtml}
+                        ${inputHtml}
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button type="button" onclick="jumpExam(${exam.idx - 1})" ${exam.idx === 0 ? 'disabled' : ''} class="btn-bunny bg-white px-5 py-2.5 rounded-2xl font-black text-sm">⬅️ Previous</button>
+                        ${exam.idx < exam.questions.length - 1 ? `
+                            <button type="button" onclick="jumpExam(${exam.idx + 1})" class="btn-bunny bg-[#D6ECFA] px-5 py-2.5 rounded-2xl font-black text-sm">Next ➡️</button>
+                        ` : `
+                            <button type="button" onclick="submitExam()" class="btn-bunny bg-[#FF9E44] px-6 py-2.5 rounded-2xl font-black text-base">Submit Test</button>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+
+        function playExamDialogue() {
+            const q = exam.questions[exam.idx];
+            if (!q || !q.dialogue || !ukAudio.hasUK) return;
+            stopAudio();
+            q.dialogue.forEach(turn => {
+                const u = new SpeechSynthesisUtterance(turn.line);
+                u.lang = 'en-GB';
+                u.voice = turn.role === 'boy' ? ukAudio.boyVoice : ukAudio.girlVoice;
+                u.pitch = turn.role === 'boy' ? 1.12 : 1.16;
+                u.rate = 0.96;
+                window.speechSynthesis.speak(u);
+            });
+        }
+
+        function jumpExam(i) {
+            if (i < 0 || i >= exam.questions.length) return;
+            stopMicRecording(true);
+            exam.idx = i;
+            renderExamScreen();
+        }
+
+        function recordExamAnswer(val, rerender = true) {
+            exam.answersMap[exam.idx] = val;
+            if (rerender) renderExamScreen();
+        }
+
+        function submitExam() {
+            clearActiveTimer();
+            stopAudio();
+            stopMicRecording(true);
+
+            const skillTotals = {
+                listening: { c: 0, t: 0 },
+                speaking: { c: 0, t: 0 },
+                reading: { c: 0, t: 0 },
+                writing: { c: 0, t: 0 }
+            };
+            let totalCorrect = 0;
+
+            const details = exam.questions.map((q, i) => {
+                const rawAns = exam.answersMap[i];
+                let isOk = false;
+                let givenDisplay = '—';
+                let expectedDisplay = '';
+
+                if (q.type === 'choice') {
+                    isOk = rawAns === q.correctId;
+                    const chosenObj = q.options.find(o => o.id === rawAns);
+                    givenDisplay = chosenObj ? chosenObj.label : '—';
+                    expectedDisplay = q.correctLabel;
+                } else if (q.type === 'fill_blank') {
+                    const valid = (q.acceptedAnswers || []).map(normalizeAnswer);
+                    isOk = rawAns && valid.includes(normalizeAnswer(rawAns));
+                    givenDisplay = rawAns || '—';
+                    expectedDisplay = (q.acceptedAnswers || [''])[0];
+                } else if (q.type === 'unscramble') {
+                    isOk = rawAns && normalizeAnswer(rawAns) === normalizeAnswer(q.answerText);
+                    givenDisplay = rawAns || '—';
+                    expectedDisplay = q.answerText;
+                } else if (q.type === 'speaking') {
+                    isOk = Boolean(rawAns);
+                    givenDisplay = rawAns ? 'Spoken ✅' : '—';
+                    expectedDisplay = q.targetText;
+                }
+
+                skillTotals[q.skill].t += 1;
+                if (isOk) {
+                    totalCorrect += 1;
+                    skillTotals[q.skill].c += 1;
+                }
+                recordSkillPoints(q.skill, isOk ? 1 : 0, 1);
+
+                return { q, givenDisplay, expectedDisplay, isOk };
+            });
+
+            const score10 = Math.round((totalCorrect / exam.questions.length) * 100) / 10;
+            if (exam.type === 'midterm') state.midtermScore = score10;
+            else state.finalScore = score10;
+            saveState();
+
+            const weakSkills = Object.entries(skillTotals)
+                .filter(([_, v]) => v.t > 0 && (v.c / v.t) < 0.75)
+                .map(([k]) => k.charAt(0).toUpperCase() + k.slice(1));
+
+            const ws = document.getElementById('view-workspace');
+            ws.innerHTML = `
+                <div class="sticker-card p-6 bg-[#FFFDF7]">
+                    <div class="text-center pb-5 mb-5 border-b-2 border-dashed border-[#5C3D2E]/25">
+                        <div class="text-5xl mb-2">${exam.type === 'midterm' ? '🏅' : '👑'}</div>
+                        <h2 class="text-2xl font-black">${state.nickname} — ${score10} / 10</h2>
+                        <p class="text-sm font-extrabold text-[#855E4B]">Correct: ${totalCorrect} / ${exam.questions.length}</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+                        ${Object.entries(skillTotals).map(([sk, v]) => `
+                            <div class="bg-[#FFF7D6] border-2 border-[#5C3D2E] rounded-2xl p-3 text-center">
+                                <div class="text-xs font-black uppercase">${sk}</div>
+                                <div class="text-lg font-black mt-0.5">${v.c} / ${v.t}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="bg-[#D6ECFA]/60 border-2 border-[#5C3D2E] rounded-2xl p-3.5 mb-5 flex flex-wrap items-center justify-between gap-2">
+                        <span class="text-sm font-black">🎯 Practise More: <strong>${weakSkills.length ? weakSkills.join(', ') : 'All Skills Strong!'}</strong></span>
+                        <button type="button" onclick="openModule('practice')" class="btn-bunny bg-[#FF9E44] px-4 py-1.5 rounded-xl text-xs font-black">Unit Practice</button>
+                    </div>
+
+                    <div class="space-y-2 max-h-72 overflow-y-auto mb-5 pr-1">
+                        ${details.map((d, idx) => `
+                            <div class="p-3 rounded-2xl border-2 border-[#5C3D2E] ${d.isOk ? 'bg-[#D4F1E8]/70' : 'bg-[#FFD6E0]/70'} text-xs sm:text-sm font-bold">
+                                <div><strong>${d.isOk ? '✅' : '❌'} Q${idx + 1} (${d.q.skill}):</strong> ${d.q.prompt}</div>
+                                <div>Your answer: <strong>${d.givenDisplay}</strong> | Correct: <strong>${d.expectedDisplay}</strong></div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="text-center">
+                        <button type="button" onclick="goHome()" class="btn-bunny bg-[#FFD6E0] px-6 py-2.5 rounded-2xl font-black text-sm">Classroom</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* =========================================================================
+           15. INITIALISE APP ON WINDOW LOAD
+           ========================================================================= */
+        window.onload = function () {
+            document.getElementById('header-bunny-left').innerHTML = MASCOTS[0].svg;
+            initUKVoices();
+            loadState();
+            renderAvatarPicker('gate-avatar-picker', state.avatar, 'pickGateAvatar');
+
+            if (state.nickname) {
+                showClassroomUI();
+            }
+        };
+    </script>
+</body>
+</html>
